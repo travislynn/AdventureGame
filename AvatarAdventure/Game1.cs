@@ -18,6 +18,7 @@ namespace AvatarAdventure
         ITitleIntroState titleIntroState;
         IMainMenuState startMenuState;
         static Rectangle screenRectangle;
+
         public SpriteBatch SpriteBatch
         {
             get { return spriteBatch; }
@@ -41,13 +42,18 @@ namespace AvatarAdventure
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
             screenRectangle = new Rectangle(0, 0, 1280, 720);
+
             graphics.PreferredBackBufferWidth = ScreenRectangle.Width;
             graphics.PreferredBackBufferHeight = ScreenRectangle.Height;
+
             gameStateManager = new GameStateManager(this);
             Components.Add(gameStateManager);
+
             this.IsMouseVisible = true;
+
             titleIntroState = new TitleIntroState(this);
             startMenuState = new MainMenuState(this);
 
