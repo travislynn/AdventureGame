@@ -110,6 +110,8 @@ namespace AvatarAdventure.Components
             }
             height -= 50;
         }
+
+
         public void Update(GameTime gameTime) //, PlayerIndex index)
         {
             Vector2 menuPosition = position;

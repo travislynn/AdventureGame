@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-
 namespace AvatarAdventure.GameStates
 {
     public class MainMenuState : BaseGameState, IMainMenuState
@@ -74,6 +73,7 @@ namespace AvatarAdventure.GameStates
             }
             base.Update(gameTime);
         }
+
         public override void Draw(GameTime gameTime)
         {
             GameRef.SpriteBatch.Begin();

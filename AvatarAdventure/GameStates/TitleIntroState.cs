@@ -1,6 +1,9 @@
 ﻿using System;
+using AvatarAdventure.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
 
 
 namespace AvatarAdventure.GameStates
@@ -39,12 +42,25 @@ namespace AvatarAdventure.GameStates
                 Game1.ScreenRectangle.Bottom - 50 - font.LineSpacing);
             base.LoadContent();
         }
+        //public override void Update(GameTime gameTime)
+        //{
+        //    PlayerIndex index = PlayerIndex.One;
+        //    elapsed += gameTime.ElapsedGameTime;
+        //    base.Update(gameTime);
+        //}
+
         public override void Update(GameTime gameTime)
         {
-            PlayerIndex index = PlayerIndex.One;
+            PlayerIndex? index = null;
             elapsed += gameTime.ElapsedGameTime;
+            if (Xin.CheckKeyReleased(Keys.Space) || Xin.CheckKeyReleased(Keys.Enter) ||
+                Xin.CheckMouseReleased(MouseButtons.Left))
+            {
+                manager.ChangeState((MainMenuState)GameRef.StartMenuState, index);
+            }
             base.Update(gameTime);
         }
+
         public override void Draw(GameTime gameTime)
         {
             GameRef.SpriteBatch.Begin();
