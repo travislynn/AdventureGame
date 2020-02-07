@@ -75,6 +75,7 @@
     <Content Include="Content\GameScreens\menuscreen.png" />
     <Content Include="Content\GameScreens\titlescreen.png" />
     <Content Include="Content\Misc\wooden-button.png" />
+    <Content Include="Content\Tiles\tileset1.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

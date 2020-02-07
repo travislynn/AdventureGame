@@ -51,16 +51,23 @@ namespace AvatarAdventure.GameStates
         public override void Update(GameTime gameTime)
         {
             menuComponent.Update(gameTime);
+
             if (Xin.CheckKeyReleased(Keys.Space) || Xin.CheckKeyReleased(Keys.Enter) ||
                 (menuComponent.MouseOver && Xin.CheckMouseReleased(MouseButtons.Left)))
             {
                 if (menuComponent.SelectedIndex == 0)
                 {
                     Xin.FlushInput();
+                    GameRef.GamePlayState.SetUpNewGame();
+                    GameRef.GamePlayState.StartGame();
+                    manager.PushState((GamePlayState)GameRef.GamePlayState, PlayerIndexInControl);
                 }
                 else if (menuComponent.SelectedIndex == 1)
                 {
                     Xin.FlushInput();
+                    GameRef.GamePlayState.LoadExistingGame();
+                    GameRef.GamePlayState.StartGame();
+                    manager.PushState((GamePlayState)GameRef.GamePlayState, PlayerIndexInControl);
                 }
                 else if (menuComponent.SelectedIndex == 2)
                 {
@@ -73,6 +80,7 @@ namespace AvatarAdventure.GameStates
             }
             base.Update(gameTime);
         }
+
 
         public override void Draw(GameTime gameTime)
         {
