@@ -12,6 +12,7 @@ namespace AvatarAdventure.Components
     public class MenuComponent
     {
         #region Fields
+
         SpriteFont spriteFont;
         readonly List<string> menuItems = new List<string>();
         int selectedIndex = -1;
@@ -26,6 +27,7 @@ namespace AvatarAdventure.Components
         #endregion Fields
 
         #region Properties
+
         public Vector2 Postion
         {
             get { return position; }
@@ -66,12 +68,14 @@ namespace AvatarAdventure.Components
         }
         #endregion Properties
         #region Constructors
+
         public MenuComponent(SpriteFont spriteFont, Texture2D texture)
         {
             this.mouseOver = false;
             this.spriteFont = spriteFont;
             this.texture = texture;
         }
+
         public MenuComponent(SpriteFont spriteFont, Texture2D texture, string[] menuItems)
         : this(spriteFont, texture)
         {
@@ -82,8 +86,10 @@ namespace AvatarAdventure.Components
             }
             MeassureMenu();
         }
+
         #endregion Constructors
         #region Methods
+
         public void SetMenuItems(string[] items)
         {
             menuItems.Clear();
@@ -112,8 +118,7 @@ namespace AvatarAdventure.Components
             mouseOver = false;
             for (int i = 0; i < menuItems.Count; i++)
             {
-                buttonRect = new Rectangle((int)menuPosition.X, (int)menuPosition.Y,
-                texture.Width, texture.Height);
+                buttonRect = new Rectangle((int)menuPosition.X, (int)menuPosition.Y, texture.Width, texture.Height);
                 if (buttonRect.Contains(p))
                 {
                     selectedIndex = i;
@@ -144,13 +149,11 @@ namespace AvatarAdventure.Components
                     myColor = HiliteColor;
                 else
                     myColor = NormalColor;
+
                 spriteBatch.Draw(texture, menuPosition, Color.White);
                 Vector2 textSize = spriteFont.MeasureString(menuItems[i]);
                 Vector2 textPosition = menuPosition + new Vector2((int)(texture.Width - textSize.X) / 2, (int)(texture.Height - textSize.Y) / 2);
-                spriteBatch.DrawString(spriteFont,
-                menuItems[i],
-                textPosition,
-                myColor);
+                spriteBatch.DrawString(spriteFont, menuItems[i], textPosition, myColor);
                 menuPosition.Y += texture.Height + 50;
             }
         }
@@ -158,5 +161,6 @@ namespace AvatarAdventure.Components
         #endregion Methods
         #region Virtual Methods
         #endregion Virtual Methods
-    }
+    }
+
 }

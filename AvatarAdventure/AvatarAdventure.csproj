@@ -46,7 +46,9 @@
     <Compile Include="Components\Xin.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
+    <Compile Include="GameStates\IMainMenuState.cs" />
     <Compile Include="GameStates\ITitleIntroState.cs" />
+    <Compile Include="GameStates\MainMenuState.cs" />
     <Compile Include="GameStates\TitleIntroState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,11 +67,13 @@
   <ItemGroup>
     <Content Include="Content\GameScreens\menuscreen.png" />
     <Content Include="Content\GameScreens\titlescreen.png" />
+    <Content Include="Content\Misc\wooden-button.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="Content\Fonts\GameFont.spritefont" />
     <None Include="Content\Fonts\InterfaceFont.spritefont" />
     <None Include="Content\obj\Windows\.mgcontent" />
     <None Include="Content\obj\Windows\.mgstats" />
