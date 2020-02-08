@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AvatarAdventure.CharacterComponents;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -18,6 +19,7 @@ namespace AvatarAdventure.TileEngine
         TileLayer buildingLayer;
         TileLayer decorationLayer;
         Dictionary<string, Point> characters;
+        CharacterManager characterManager;
         [ContentSerializer]
         int mapWidth;
         [ContentSerializer]
@@ -25,7 +27,6 @@ namespace AvatarAdventure.TileEngine
         TileSet tileSet;
         #endregion
         #region Property Region
-
         [ContentSerializer]
         public string MapName
         {
@@ -88,6 +89,7 @@ namespace AvatarAdventure.TileEngine
             this.characters = new Dictionary<string, Point>();
             this.tileSet = tileSet;
             this.mapName = mapName;
+            characterManager = CharacterManager.Instance;
         }
         public TileMap(
         TileSet tileSet,
@@ -190,7 +192,31 @@ namespace AvatarAdventure.TileEngine
                 buildingLayer.Draw(gameTime, spriteBatch, tileSet, camera);
             if (decorationLayer != null)
                 decorationLayer.Draw(gameTime, spriteBatch, tileSet, camera);
+            DrawCharacters(gameTime, spriteBatch, camera);
+        }
+        public void DrawCharacters(GameTime gameTime, SpriteBatch spriteBatch, Camera
+       camera)
+        {
+            spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            null,
+            null,
+            null,
+            camera.Transformation);
+            foreach (string s in characters.Keys)
+            {
+                ICharacter c = CharacterManager.Instance.GetCharacter(s);
+                if (c != null)
+                {
+                    c.Sprite.Position.X = characters[s].X * Engine.TileWidth;
+                    c.Sprite.Position.Y = characters[s].Y * Engine.TileHeight;
+                    c.Sprite.Draw(gameTime, spriteBatch);
+                }
+            }
+            spriteBatch.End();
         }
         #endregion
-    }
+    }
 }

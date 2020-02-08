@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AvatarAdventure.CharacterComponents;
 using AvatarAdventure.Components;
 using AvatarAdventure.GameStates;
 using AvatarAdventure.StateManager;
@@ -9,15 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace AvatarAdventure
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Dictionary<AnimationKey, Animation> playerAnimations = new Dictionary<AnimationKey, Animation>();
         GameStateManager gameStateManager;
+        CharacterManager characterManager;
         ITitleIntroState titleIntroState;
         IMainMenuState startMenuState;
         IGamePlayState gamePlayState;
@@ -46,6 +45,10 @@ namespace AvatarAdventure
         {
             get { return playerAnimations; }
         }
+        public CharacterManager CharacterManager
+        {
+            get { return characterManager; }
+        }
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -61,17 +64,32 @@ namespace AvatarAdventure
             gamePlayState = new GamePlayState(this);
 
             gameStateManager.ChangeState((TitleIntroState)titleIntroState, PlayerIndex.One);
+            characterManager = CharacterManager.Instance;
         }
+
+        //protected override void Initialize()
+        //{
+        //    Components.Add(new Xin(this));
+        //    Animation animation = new Animation(3, 32, 32, 0, 0);
+        //    playerAnimations.Add(AnimationKey.WalkDown, animation);
+        //    animation = new Animation(3, 32, 32, 0, 32);
+        //    playerAnimations.Add(AnimationKey.WalkLeft, animation);
+        //    animation = new Animation(3, 32, 32, 0, 64);
+        //    playerAnimations.Add(AnimationKey.WalkRight, animation);
+        //    animation = new Animation(3, 32, 32, 0, 96);
+        //    playerAnimations.Add(AnimationKey.WalkUp, animation);
+        //    base.Initialize();
+        //}
         protected override void Initialize()
         {
             Components.Add(new Xin(this));
-            Animation animation = new Animation(3, 32, 32, 0, 0);
+            Animation animation = new Animation(3, 64, 64, 0, 0);
             playerAnimations.Add(AnimationKey.WalkDown, animation);
-            animation = new Animation(3, 32, 32, 0, 32);
+            animation = new Animation(3, 64, 64, 0, 64);
             playerAnimations.Add(AnimationKey.WalkLeft, animation);
-            animation = new Animation(3, 32, 32, 0, 64);
+            animation = new Animation(3, 64, 64, 0, 128);
             playerAnimations.Add(AnimationKey.WalkRight, animation);
-            animation = new Animation(3, 32, 32, 0, 96);
+            animation = new Animation(3, 64, 64, 0, 192);
             playerAnimations.Add(AnimationKey.WalkUp, animation);
             base.Initialize();
         }
@@ -94,7 +112,5 @@ namespace AvatarAdventure
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
         }
-    }
-
-
+    }
 }

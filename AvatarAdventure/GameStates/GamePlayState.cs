@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AvatarAdventure.CharacterComponents;
 using AvatarAdventure.Components;
 using AvatarAdventure.PlayerComponents;
 using AvatarAdventure.TileEngine;
@@ -36,28 +37,26 @@ namespace AvatarAdventure.GameStates
         public override void Update(GameTime gameTime)
         {
             Vector2 motion = Vector2.Zero;
+            int cp = 8;
             if (Xin.KeyboardState.IsKeyDown(Keys.W) && Xin.KeyboardState.IsKeyDown(Keys.A))
             {
                 motion.X = -1;
                 motion.Y = -1;
                 player.Sprite.CurrentAnimation = AnimationKey.WalkLeft;
             }
-            else if (Xin.KeyboardState.IsKeyDown(Keys.W) &&
-           Xin.KeyboardState.IsKeyDown(Keys.D))
+            else if (Xin.KeyboardState.IsKeyDown(Keys.W) && Xin.KeyboardState.IsKeyDown(Keys.D))
             {
                 motion.X = 1;
                 motion.Y = -1;
                 player.Sprite.CurrentAnimation = AnimationKey.WalkRight;
             }
-            else if (Xin.KeyboardState.IsKeyDown(Keys.S) &&
-           Xin.KeyboardState.IsKeyDown(Keys.A))
+            else if (Xin.KeyboardState.IsKeyDown(Keys.S) && Xin.KeyboardState.IsKeyDown(Keys.A))
             {
                 motion.X = -1;
                 motion.Y = 1;
                 player.Sprite.CurrentAnimation = AnimationKey.WalkLeft;
             }
-            else if (Xin.KeyboardState.IsKeyDown(Keys.S) &&
-           Xin.KeyboardState.IsKeyDown(Keys.D))
+            else if (Xin.KeyboardState.IsKeyDown(Keys.S) && Xin.KeyboardState.IsKeyDown(Keys.D))
             {
                 motion.X = 1;
                 motion.Y = 1;
@@ -87,10 +86,33 @@ namespace AvatarAdventure.GameStates
             {
                 motion.Normalize();
                 motion *= (player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                Rectangle pRect = new Rectangle(
+                (int)player.Sprite.Position.X + (int)motion.X + cp,
+                (int)player.Sprite.Position.Y + (int)motion.Y + cp,
+                Engine.TileWidth - cp,
+                Engine.TileHeight - cp);
+                foreach (string s in map.Characters.Keys)
+                {
+                    ICharacter c = GameRef.CharacterManager.GetCharacter(s);
+                    Rectangle r = new Rectangle(
+                    (int)map.Characters[s].X * Engine.TileWidth + cp,
+                    (int)map.Characters[s].Y * Engine.TileHeight + cp,
+                    Engine.TileWidth - cp,
+                    Engine.TileHeight - cp);
+                    if (pRect.Intersects(r))
+                    {
+                        motion = Vector2.Zero;
+                        break;
+                    }
+                }
                 Vector2 newPosition = player.Sprite.Position + motion;
                 player.Sprite.Position = newPosition;
                 player.Sprite.IsAnimating = true;
                 player.Sprite.LockToMap(new Point(map.WidthInPixels, map.HeightInPixels));
+            }
+            else
+            {
+                player.Sprite.IsAnimating = false;
             }
             camera.LockToSprite(map, player.Sprite, Game1.ScreenRectangle);
             player.Sprite.Update(gameTime);
@@ -125,8 +147,18 @@ namespace AvatarAdventure.GameStates
             map.FillEdges();
             map.FillBuilding();
             map.FillDecoration();
+            ICharacter teacherOne = Character.FromString(GameRef,
+                "Lance,teacherone,WalkDown,teacherone");
+            ICharacter teacherTwo = PCharacter.FromString(GameRef,
+                "Marissa,teachertwo,WalkDown,tearchertwo");
+            GameRef.CharacterManager.AddCharacter("teacherone", teacherOne);
+            GameRef.CharacterManager.AddCharacter("teachertwo", teacherTwo);
+            map.Characters.Add("teacherone", new Point(0, 4));
+            map.Characters.Add("teachertwo", new Point(4, 0));
             camera = new Camera();
         }
+
+
         public void LoadExistingGame()
         {
         }
@@ -134,4 +166,5 @@ namespace AvatarAdventure.GameStates
         {
         }
     }
-}
+}
+
