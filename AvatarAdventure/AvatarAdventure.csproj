@@ -41,6 +41,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AvatarComponents\Avatar.cs" />
+    <Compile Include="AvatarComponents\IMove.cs" />
+    <Compile Include="AvatarComponents\MoveElement.cs" />
+    <Compile Include="AvatarComponents\MoveType.cs" />
+    <Compile Include="AvatarComponents\Status.cs" />
+    <Compile Include="AvatarComponents\Target.cs" />
     <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Components\MouseButtons.cs" />
     <Compile Include="Components\Xin.cs" />
