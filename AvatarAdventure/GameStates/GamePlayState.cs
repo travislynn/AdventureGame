@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AvatarAdventure.Components;
+using AvatarAdventure.PlayerComponents;
 using AvatarAdventure.TileEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,21 +18,21 @@ namespace AvatarAdventure.GameStates
         Engine engine = new Engine(Game1.ScreenRectangle, 64, 64);
         TileMap map;
         Camera camera;
-
-        public GamePlayState(Game game) : base(game)
+        Player player;
+        public GamePlayState(Game game)
+        : base(game)
         {
             game.Services.AddService(typeof(IGamePlayState), this);
         }
-
         public override void Initialize()
         {
             base.Initialize();
         }
-
         protected override void LoadContent()
         {
+            Texture2D spriteSheet = content.Load<Texture2D>(@"PlayerSprites\maleplayer");
+            player = new Player(GameRef, "Wesley", false, spriteSheet);
         }
-
         public override void Update(GameTime gameTime)
         {
             Vector2 motion = Vector2.Zero;
@@ -39,57 +40,77 @@ namespace AvatarAdventure.GameStates
             {
                 motion.X = -1;
                 motion.Y = -1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkLeft;
             }
             else if (Xin.KeyboardState.IsKeyDown(Keys.W) &&
-                     Xin.KeyboardState.IsKeyDown(Keys.D))
+           Xin.KeyboardState.IsKeyDown(Keys.D))
             {
                 motion.X = 1;
                 motion.Y = -1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkRight;
             }
             else if (Xin.KeyboardState.IsKeyDown(Keys.S) &&
-                     Xin.KeyboardState.IsKeyDown(Keys.A))
+           Xin.KeyboardState.IsKeyDown(Keys.A))
             {
                 motion.X = -1;
                 motion.Y = 1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkLeft;
             }
             else if (Xin.KeyboardState.IsKeyDown(Keys.S) &&
-                     Xin.KeyboardState.IsKeyDown(Keys.D))
+           Xin.KeyboardState.IsKeyDown(Keys.D))
             {
                 motion.X = 1;
                 motion.Y = 1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkRight;
             }
             else if (Xin.KeyboardState.IsKeyDown(Keys.W))
             {
                 motion.Y = -1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkUp;
             }
             else if (Xin.KeyboardState.IsKeyDown(Keys.S))
             {
                 motion.Y = 1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkDown;
             }
             else if (Xin.KeyboardState.IsKeyDown(Keys.A))
             {
                 motion.X = -1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkLeft;
             }
             else if (Xin.KeyboardState.IsKeyDown(Keys.D))
             {
                 motion.X = 1;
+                player.Sprite.CurrentAnimation = AnimationKey.WalkRight;
             }
             if (motion != Vector2.Zero)
             {
                 motion.Normalize();
-                motion *= camera.Speed;
-                camera.Position += motion;
-                camera.LockCamera(map, Game1.ScreenRectangle);
+                motion *= (player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                Vector2 newPosition = player.Sprite.Position + motion;
+                player.Sprite.Position = newPosition;
+                player.Sprite.IsAnimating = true;
+                player.Sprite.LockToMap(new Point(map.WidthInPixels, map.HeightInPixels));
             }
+            camera.LockToSprite(map, player.Sprite, Game1.ScreenRectangle);
+            player.Sprite.Update(gameTime);
             base.Update(gameTime);
         }
-
-
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
             if (map != null && camera != null)
                 map.Draw(gameTime, GameRef.SpriteBatch, camera);
+            GameRef.SpriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            null,
+            null,
+            null,
+            camera.Transformation);
+            player.Sprite.Draw(gameTime, GameRef.SpriteBatch);
+            GameRef.SpriteBatch.End();
         }
         public void SetUpNewGame()
         {
@@ -106,7 +127,6 @@ namespace AvatarAdventure.GameStates
             map.FillDecoration();
             camera = new Camera();
         }
-
         public void LoadExistingGame()
         {
         }
@@ -114,5 +134,4 @@ namespace AvatarAdventure.GameStates
         {
         }
     }
-
-}
+}
