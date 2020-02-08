@@ -49,7 +49,9 @@
     <Compile Include="AvatarComponents\Status.cs" />
     <Compile Include="AvatarComponents\Target.cs" />
     <Compile Include="CharacterComponents\Character.cs" />
+    <Compile Include="CharacterComponents\CharacterManager.cs" />
     <Compile Include="CharacterComponents\ICharacter.cs" />
+    <Compile Include="CharacterComponents\PCharacter.cs" />
     <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Components\MouseButtons.cs" />
     <Compile Include="Components\Xin.cs" />
