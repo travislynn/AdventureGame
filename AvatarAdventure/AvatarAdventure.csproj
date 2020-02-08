@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AvatarComponents\Avatar.cs" />
+    <Compile Include="AvatarComponents\AvatarElement.cs" />
     <Compile Include="AvatarComponents\IMove.cs" />
     <Compile Include="AvatarComponents\MoveElement.cs" />
     <Compile Include="AvatarComponents\MoveType.cs" />

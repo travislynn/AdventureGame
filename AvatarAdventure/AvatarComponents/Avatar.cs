@@ -9,12 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AvatarAdventure.AvatarComponents
 {
-    public enum AvatarElement
-    {
-        Dark, Earth, Fire, Light, Water, Wind
-    }
-
-    class Avatar
+    public class Avatar
     {
         #region Field Region
         private static Random random = new Random();
