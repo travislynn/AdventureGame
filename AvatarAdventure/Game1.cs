@@ -67,19 +67,7 @@ namespace AvatarAdventure
             characterManager = CharacterManager.Instance;
         }
 
-        //protected override void Initialize()
-        //{
-        //    Components.Add(new Xin(this));
-        //    Animation animation = new Animation(3, 32, 32, 0, 0);
-        //    playerAnimations.Add(AnimationKey.WalkDown, animation);
-        //    animation = new Animation(3, 32, 32, 0, 32);
-        //    playerAnimations.Add(AnimationKey.WalkLeft, animation);
-        //    animation = new Animation(3, 32, 32, 0, 64);
-        //    playerAnimations.Add(AnimationKey.WalkRight, animation);
-        //    animation = new Animation(3, 32, 32, 0, 96);
-        //    playerAnimations.Add(AnimationKey.WalkUp, animation);
-        //    base.Initialize();
-        //}
+        // this sets up the player and the npc characters, so they have to have the same size spritemap!
         protected override void Initialize()
         {
             Components.Add(new Xin(this));
