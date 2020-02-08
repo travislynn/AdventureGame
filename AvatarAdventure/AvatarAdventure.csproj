@@ -63,6 +63,7 @@
     <Compile Include="ConversationComponents\SceneOption.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
+    <Compile Include="GameStates\ConversationState.cs" />
     <Compile Include="GameStates\GamePlayState.cs" />
     <Compile Include="GameStates\IGamePlayState.cs" />
     <Compile Include="GameStates\IMainMenuState.cs" />

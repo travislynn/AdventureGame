@@ -85,20 +85,17 @@ namespace AvatarAdventure.ConversationComponents
             NormalColor = Color.Blue;
             HighLightColor = Color.Red;
         }
-        public GameScene(string text, List<SceneOption> options)
+        public GameScene(string text, List<SceneOption> options) : this()
         {
             this.text = text;
             this.options = options;
             textPosition = Vector2.Zero;
         }
-        public GameScene(Game game, string text, List<SceneOption> options)
+        public GameScene(Game game, string text, List<SceneOption> options) : this(text, options)
         {
             this.game = game;
-            this.options = new List<SceneOption>();
-            this.highLight = Color.Red;
-            this.normal = Color.Black;
-            this.options = options;
         }
+
         #endregion
         #region Method Region
         public void SetText(string text, SpriteFont font)

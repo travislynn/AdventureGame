@@ -14,12 +14,14 @@ namespace AvatarAdventure
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Dictionary<AnimationKey, Animation> playerAnimations = new Dictionary<AnimationKey, Animation>();
+        Dictionary<AnimationKey, Animation> playerAnimations = new Dictionary<AnimationKey,
+       Animation>();
         GameStateManager gameStateManager;
         CharacterManager characterManager;
         ITitleIntroState titleIntroState;
         IMainMenuState startMenuState;
         IGamePlayState gamePlayState;
+        IConversationState conversationState;
         static Rectangle screenRectangle;
         public SpriteBatch SpriteBatch
         {
@@ -62,12 +64,10 @@ namespace AvatarAdventure
             titleIntroState = new TitleIntroState(this);
             startMenuState = new MainMenuState(this);
             gamePlayState = new GamePlayState(this);
-
+            conversationState = new ConversationState(this);
             gameStateManager.ChangeState((TitleIntroState)titleIntroState, PlayerIndex.One);
             characterManager = CharacterManager.Instance;
         }
-
-        // this sets up the player and the npc characters, so they have to have the same size spritemap!
         protected override void Initialize()
         {
             Components.Add(new Xin(this));

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AvatarAdventure.CharacterComponents;
 using AvatarAdventure.Components;
+using AvatarAdventure.ConversationComponents;
 using AvatarAdventure.PlayerComponents;
 using AvatarAdventure.TileEngine;
 using Microsoft.Xna.Framework;
@@ -116,6 +117,24 @@ namespace AvatarAdventure.GameStates
             }
             camera.LockToSprite(map, player.Sprite, Game1.ScreenRectangle);
             player.Sprite.Update(gameTime);
+            if (Xin.CheckKeyReleased(Keys.Space) || Xin.CheckKeyReleased(Keys.Enter))
+            {
+                foreach (string s in map.Characters.Keys)
+                {
+                    ICharacter c = CharacterManager.Instance.GetCharacter(s);
+                    float distance = Vector2.Distance(player.Sprite.Center, c.Sprite.Center);
+                    if (Math.Abs(distance) < 72f)
+                    {
+                        IConversationState conversationState =
+                       (IConversationState)GameRef.Services.GetService(typeof(IConversationState));
+                        manager.PushState(
+                        (ConversationState)conversationState,
+                        PlayerIndexInControl);
+                        conversationState.SetConversation(player, c);
+                        conversationState.StartConversation();
+                    }
+                }
+            }
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
@@ -147,16 +166,20 @@ namespace AvatarAdventure.GameStates
             map.FillEdges();
             map.FillBuilding();
             map.FillDecoration();
+            ConversationManager.CreateConversations(GameRef);
             ICharacter teacherOne = Character.FromString(GameRef,
                 "Lance,teacherone,WalkDown,teacherone");
             ICharacter teacherTwo = PCharacter.FromString(GameRef,
                 "Marissa,teachertwo,WalkDown,tearchertwo");
+            teacherOne.SetConversation("LanceHello");
+            teacherTwo.SetConversation("MarissaHello");
             GameRef.CharacterManager.AddCharacter("teacherone", teacherOne);
             GameRef.CharacterManager.AddCharacter("teachertwo", teacherTwo);
             map.Characters.Add("teacherone", new Point(0, 4));
             map.Characters.Add("teachertwo", new Point(4, 0));
             camera = new Camera();
         }
+
 
 
         public void LoadExistingGame()

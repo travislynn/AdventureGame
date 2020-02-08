@@ -61,6 +61,11 @@ namespace AvatarAdventure.TileEngine
             set { velocity = value; }
         }
 
+        public Vector2 Center
+        {
+            get { return Position + new Vector2(Width / 2, Height / 2); }
+        }
+
         #endregion
 
         #region Constructor Region
@@ -105,4 +110,4 @@ namespace AvatarAdventure.TileEngine
 
         #endregion
     }
-}
+}
