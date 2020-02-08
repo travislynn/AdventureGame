@@ -48,6 +48,8 @@
     <Compile Include="AvatarComponents\MoveType.cs" />
     <Compile Include="AvatarComponents\Status.cs" />
     <Compile Include="AvatarComponents\Target.cs" />
+    <Compile Include="CharacterComponents\Character.cs" />
+    <Compile Include="CharacterComponents\ICharacter.cs" />
     <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Components\MouseButtons.cs" />
     <Compile Include="Components\Xin.cs" />
@@ -83,6 +85,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CharacterSprites\teacherone.png" />
+    <Content Include="Content\CharacterSprites\teachertwo.png" />
     <Content Include="Content\GameScreens\menuscreen.png" />
     <Content Include="Content\GameScreens\titlescreen.png" />
     <Content Include="Content\Misc\wooden-button.png" />
