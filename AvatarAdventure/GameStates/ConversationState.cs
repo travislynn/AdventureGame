@@ -80,7 +80,7 @@ namespace AvatarAdventure.GameStates
             conversation.Update(gameTime);
             base.Update(gameTime);
         }
-
+/
 
         public override void Draw(GameTime gameTime)
         {
@@ -93,7 +93,8 @@ namespace AvatarAdventure.GameStates
         {
             this.player = player;
             speaker = character;
-            // fails converting pcharacter to character
+            // fails converting pcharacter to character, talking to first pchar
+            // todo: better way of getting char.Converstaion from ICharacter.  Move to GetConverstaion or use base class
 
             string charConvo = character is Character character1 ? character1.Conversation: ((PCharacter)character).Conversation;
             if (ConversationManager.ConversationList.ContainsKey(charConvo))
@@ -101,9 +102,6 @@ namespace AvatarAdventure.GameStates
                     ConversationManager.ConversationList[charConvo];
             else
                 manager.PopState();
-
-
-
 
             //if (ConversationManager.ConversationList.ContainsKey(((Character)character).Conversation))
             //    this.conversation =
