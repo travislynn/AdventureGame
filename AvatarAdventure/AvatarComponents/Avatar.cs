@@ -336,6 +336,36 @@ namespace AvatarAdventure.AvatarComponents
             }
         }
 
+        public static Avatar FromString(string description, ContentManager content)
+        {
+            Avatar avatar = new Avatar();
+            string[] parts = description.Split(',');
+            avatar.name = parts[0];
+            avatar.texture = content.Load<Texture2D>(@"AvatarImages\" + parts[0]);
+            avatar.element = (AvatarElement)Enum.Parse(typeof(AvatarElement), parts[1]);
+            avatar.costToBuy = int.Parse(parts[2]);
+            avatar.level = int.Parse(parts[3]);
+            avatar.attack = int.Parse(parts[4]);
+            avatar.defense = int.Parse(parts[5]);
+            avatar.speed = int.Parse(parts[6]);
+            avatar.health = int.Parse(parts[7]);
+            avatar.currentHealth = avatar.health;
+            avatar.knownMoves = new Dictionary<string, IMove>();
+            for (int i = 8; i < parts.Length; i++)
+            {
+                string[] moveParts = parts[i].Split(':');
+                if (moveParts[0] != "None")
+                {
+                    IMove move = MoveManager.GetMove(moveParts[0]);
+                    move.UnlockedAt = int.Parse(moveParts[1]);
+                    if (move.UnlockedAt <= avatar.Level)
+                        move.Unlock();
+                    avatar.knownMoves.Add(move.Name, move);
+                }
+            }
+            return avatar;
+        }
+
         public object Clone()
         {
             Avatar avatar = new Avatar();

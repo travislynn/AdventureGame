@@ -25,8 +25,7 @@ namespace AvatarAdventure.CharacterComponents
         private AnimatedSprite sprite;
         private string conversation;
         private static Game1 gameRef;
-        private static Dictionary<AnimationKey, Animation> characterAnimations = new
-       Dictionary<AnimationKey, Animation>();
+        private static Dictionary<AnimationKey, Animation> characterAnimations = new Dictionary<AnimationKey, Animation>();
         #endregion
         #region Property Region
         public string Name
@@ -68,8 +67,7 @@ namespace AvatarAdventure.CharacterComponents
             PCharacter character = new PCharacter();
             string[] parts = characterString.Split(',');
             character.name = parts[0];
-            Texture2D texture = game.Content.Load<Texture2D>(@"CharacterSprites\" +
-           parts[1]);
+            Texture2D texture = game.Content.Load<Texture2D>(@"CharacterSprites\" + parts[1]);
             character.sprite = new AnimatedSprite(texture, gameRef.PlayerAnimations);
             AnimationKey key = AnimationKey.WalkDown;
             Enum.TryParse<AnimationKey>(parts[2], true, out key);

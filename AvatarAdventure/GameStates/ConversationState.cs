@@ -93,11 +93,23 @@ namespace AvatarAdventure.GameStates
         {
             this.player = player;
             speaker = character;
-            if (ConversationManager.ConversationList.ContainsKey(((Character)character).Conversation))
+            // fails converting pcharacter to character
+
+            string charConvo = character is Character character1 ? character1.Conversation: ((PCharacter)character).Conversation;
+            if (ConversationManager.ConversationList.ContainsKey(charConvo))
                 this.conversation =
-                    ConversationManager.ConversationList[((Character)character).Conversation];
+                    ConversationManager.ConversationList[charConvo];
             else
                 manager.PopState();
+
+
+
+
+            //if (ConversationManager.ConversationList.ContainsKey(((Character)character).Conversation))
+            //    this.conversation =
+            //        ConversationManager.ConversationList[((Character)character).Conversation];
+            //else
+            //    manager.PopState();
         }
         public void StartConversation()
         {

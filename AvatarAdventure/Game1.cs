@@ -81,10 +81,18 @@ namespace AvatarAdventure
             playerAnimations.Add(AnimationKey.WalkUp, animation);
             base.Initialize();
         }
+        
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            AvatarComponents.MoveManager.FillMoves();
+            AvatarComponents.AvatarManager.FromFile(@".\Data\Avatars.csv", Content);
+            // TODO:  load moves from files like avatars
         }
+
+
+
+
         protected override void UnloadContent()
         {
         }

@@ -43,10 +43,13 @@
   <ItemGroup>
     <Compile Include="AvatarComponents\Avatar.cs" />
     <Compile Include="AvatarComponents\AvatarElement.cs" />
+    <Compile Include="AvatarComponents\AvatarManager.cs" />
+    <Compile Include="AvatarComponents\Block.cs" />
     <Compile Include="AvatarComponents\IMove.cs" />
     <Compile Include="AvatarComponents\MoveElement.cs" />
     <Compile Include="AvatarComponents\MoveType.cs" />
     <Compile Include="AvatarComponents\Status.cs" />
+    <Compile Include="AvatarComponents\Tackle.cs" />
     <Compile Include="AvatarComponents\Target.cs" />
     <Compile Include="CharacterComponents\Character.cs" />
     <Compile Include="CharacterComponents\CharacterManager.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="GameStates\ITitleIntroState.cs" />
     <Compile Include="GameStates\MainMenuState.cs" />
     <Compile Include="GameStates\TitleIntroState.cs" />
+    <Compile Include="AvatarComponents\MoveManager.cs" />
     <Compile Include="PlayerComponents\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,6 +98,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AvatarImages\dark.PNG" />
+    <Content Include="Content\AvatarImages\earth.PNG" />
+    <Content Include="Content\AvatarImages\fire.PNG" />
+    <Content Include="Content\AvatarImages\light.PNG" />
+    <Content Include="Content\AvatarImages\water.PNG" />
+    <Content Include="Content\AvatarImages\wind.PNG" />
     <Content Include="Content\CharacterSprites\teacherone.png" />
     <Content Include="Content\CharacterSprites\teachertwo.png" />
     <Content Include="Content\GameScreens\menuscreen.png" />
@@ -112,6 +122,9 @@
     <None Include="Content\Fonts\GameFont.spritefont" />
     <None Include="Content\Fonts\InterfaceFont.spritefont" />
     <None Include="Content\Fonts\scenefont.spritefont" />
+    <None Include="Data\Avatars.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

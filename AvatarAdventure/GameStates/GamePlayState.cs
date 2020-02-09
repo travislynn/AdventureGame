@@ -117,6 +117,8 @@ namespace AvatarAdventure.GameStates
             }
             camera.LockToSprite(map, player.Sprite, Game1.ScreenRectangle);
             player.Sprite.Update(gameTime);
+
+            // space bar/enter hit, can interact with characters.  pcharacter fails though on setConversation
             if (Xin.CheckKeyReleased(Keys.Space) || Xin.CheckKeyReleased(Keys.Enter))
             {
                 foreach (string s in map.Characters.Keys)
