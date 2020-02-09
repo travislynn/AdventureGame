@@ -73,8 +73,11 @@ namespace AvatarAdventure.CharacterComponents
             Enum.TryParse<AnimationKey>(parts[2], true, out key);
             character.sprite.CurrentAnimation = key;
             character.conversation = parts[3];
+            for (int i = 4; i < 10 && i < parts.Length; i++)
+                character.avatars[i - 4] = AvatarManager.GetAvatar(parts[i].ToLowerInvariant());
             return character;
         }
+
         public void ChangeAvatar(int index)
         {
             if (index < 0 || index >= AvatarLimit)

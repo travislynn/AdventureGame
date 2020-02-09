@@ -52,8 +52,8 @@ namespace AvatarAdventure.AvatarComponents
                                 if (lineIn != null)
                                 {
                                     Avatar avatar = Avatar.FromString(lineIn, content);
-                                    if (!avatarList.ContainsKey(avatar.Name))
-                                        avatarList.Add(avatar.Name, avatar);
+                                    if (!avatarList.ContainsKey(avatar.Name.ToLowerInvariant()))
+                                        avatarList.Add(avatar.Name.ToLowerInvariant(), avatar);
                                 }
                             } while (lineIn != null);
                         }
@@ -77,6 +77,7 @@ namespace AvatarAdventure.AvatarComponents
                 }
             }
         }
+
         #endregion
     }
 }

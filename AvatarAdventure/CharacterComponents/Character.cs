@@ -52,6 +52,8 @@ namespace AvatarAdventure.CharacterComponents
         private static void BuildAnimations()
         {
         }
+
+        // todo: json
         public static Character FromString(Game game, string characterString)
         {
             if (gameRef == null)
@@ -67,6 +69,7 @@ namespace AvatarAdventure.CharacterComponents
             Enum.TryParse<AnimationKey>(parts[2], true, out key);
             character.sprite.CurrentAnimation = key;
             character.conversation = parts[3];
+            character.battleAvatar = AvatarManager.GetAvatar(parts[4].ToLowerInvariant());
             return character;
         }
         public void SetConversation(string newConversation)

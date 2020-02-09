@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AvatarAdventure.AvatarComponents;
 using AvatarAdventure.CharacterComponents;
 using AvatarAdventure.Components;
 using AvatarAdventure.ConversationComponents;
@@ -30,11 +31,7 @@ namespace AvatarAdventure.GameStates
         {
             base.Initialize();
         }
-        protected override void LoadContent()
-        {
-            Texture2D spriteSheet = content.Load<Texture2D>(@"PlayerSprites\maleplayer");
-            player = new Player(GameRef, "Wesley", false, spriteSheet);
-        }
+
         public override void Update(GameTime gameTime)
         {
             Vector2 motion = Vector2.Zero;
@@ -117,8 +114,6 @@ namespace AvatarAdventure.GameStates
             }
             camera.LockToSprite(map, player.Sprite, Game1.ScreenRectangle);
             player.Sprite.Update(gameTime);
-
-            // space bar/enter hit, can interact with characters.  pcharacter fails though on setConversation
             if (Xin.CheckKeyReleased(Keys.Space) || Xin.CheckKeyReleased(Keys.Enter))
             {
                 foreach (string s in map.Characters.Keys)
@@ -137,8 +132,24 @@ namespace AvatarAdventure.GameStates
                     }
                 }
             }
+            if (Xin.CheckKeyReleased(Keys.B))
+            {
+                foreach (string s in map.Characters.Keys)
+                {
+                    ICharacter c = CharacterManager.Instance.GetCharacter(s);
+                    float distance = Vector2.Distance(player.Sprite.Center, c.Sprite.Center);
+                    if (Math.Abs(distance) < 72f)
+                    {
+                        GameRef.BattleState.SetAvatars(player.CurrentAvatar, c.BattleAvatar);
+                        manager.PushState(
+                        (BattleState)GameRef.BattleState,
+                        PlayerIndexInControl);
+                    }
+                }
+            }
             base.Update(gameTime);
         }
+
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
@@ -155,8 +166,49 @@ namespace AvatarAdventure.GameStates
             player.Sprite.Draw(gameTime, GameRef.SpriteBatch);
             GameRef.SpriteBatch.End();
         }
+        //public void SetUpNewGame()
+        //{
+        //    Texture2D tiles = GameRef.Content.Load<Texture2D>(@"Tiles\tileset1");
+        //    TileSet set = new TileSet(8, 8, 32, 32);
+        //    set.Texture = tiles;
+        //    TileLayer background = new TileLayer(200, 200);
+        //    TileLayer edge = new TileLayer(200, 200);
+        //    TileLayer building = new TileLayer(200, 200);
+        //    TileLayer decor = new TileLayer(200, 200);
+        //    map = new TileMap(set, background, edge, building, decor, "test-map");
+        //    map.FillEdges();
+        //    map.FillBuilding();
+        //    map.FillDecoration();
+        //    ConversationManager.CreateConversations(GameRef);
+        //    ICharacter teacherOne = Character.FromString(GameRef,
+        //        "Lance,teacherone,WalkDown,teacherone");
+        //    ICharacter teacherTwo = PCharacter.FromString(GameRef,
+        //        "Marissa,teachertwo,WalkDown,tearchertwo");
+        //    teacherOne.SetConversation("LanceHello");
+        //    teacherTwo.SetConversation("MarissaHello");
+        //    GameRef.CharacterManager.AddCharacter("teacherone", teacherOne);
+        //    GameRef.CharacterManager.AddCharacter("teachertwo", teacherTwo);
+        //    map.Characters.Add("teacherone", new Point(0, 4));
+        //    map.Characters.Add("teachertwo", new Point(4, 0));
+        //    camera = new Camera();
+        //}
+
+        //protected override void LoadContent()
+        //{
+        //    Texture2D spriteSheet = content.Load<Texture2D>(@"PlayerSprites\maleplayer");
+        //    player = new Player(GameRef, "Wesley", false, spriteSheet);
+        //}
+
+        protected override void LoadContent()
+        {
+        }
         public void SetUpNewGame()
         {
+            Texture2D spriteSheet = content.Load<Texture2D>(@"PlayerSprites\maleplayer");
+            player = new Player(GameRef, "Wesley", false, spriteSheet);
+            player.AddAvatar("fire", AvatarManager.GetAvatar("fire"));
+            player.SetAvatar("fire");
+
             Texture2D tiles = GameRef.Content.Load<Texture2D>(@"Tiles\tileset1");
             TileSet set = new TileSet(8, 8, 32, 32);
             set.Texture = tiles;
@@ -168,25 +220,30 @@ namespace AvatarAdventure.GameStates
             map.FillEdges();
             map.FillBuilding();
             map.FillDecoration();
+
             ConversationManager.CreateConversations(GameRef);
+
             ICharacter teacherOne = Character.FromString(GameRef,
-                "Lance,teacherone,WalkDown,teacherone");
+                "Lance,teacherone,WalkDown,teacherone,water");
             ICharacter teacherTwo = PCharacter.FromString(GameRef,
-                "Marissa,teachertwo,WalkDown,tearchertwo");
+                "Marissa,teachertwo,WalkDown,tearchertwo,wind,earth");
+
             teacherOne.SetConversation("LanceHello");
             teacherTwo.SetConversation("MarissaHello");
+
             GameRef.CharacterManager.AddCharacter("teacherone", teacherOne);
             GameRef.CharacterManager.AddCharacter("teachertwo", teacherTwo);
+
             map.Characters.Add("teacherone", new Point(0, 4));
             map.Characters.Add("teachertwo", new Point(4, 0));
+
             camera = new Camera();
         }
-
-
 
         public void LoadExistingGame()
         {
         }
+
         public void StartGame()
         {
         }

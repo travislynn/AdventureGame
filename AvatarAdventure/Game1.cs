@@ -14,14 +14,14 @@ namespace AvatarAdventure
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Dictionary<AnimationKey, Animation> playerAnimations = new Dictionary<AnimationKey,
-       Animation>();
+        Dictionary<AnimationKey, Animation> playerAnimations = new Dictionary<AnimationKey, Animation>();
         GameStateManager gameStateManager;
         CharacterManager characterManager;
         ITitleIntroState titleIntroState;
         IMainMenuState startMenuState;
         IGamePlayState gamePlayState;
         IConversationState conversationState;
+        IBattleState battleState;
         static Rectangle screenRectangle;
         public SpriteBatch SpriteBatch
         {
@@ -42,6 +42,10 @@ namespace AvatarAdventure
         public IGamePlayState GamePlayState
         {
             get { return gamePlayState; }
+        }
+        public IBattleState BattleState
+        {
+            get { return battleState; }
         }
         public Dictionary<AnimationKey, Animation> PlayerAnimations
         {
@@ -65,6 +69,7 @@ namespace AvatarAdventure
             startMenuState = new MainMenuState(this);
             gamePlayState = new GamePlayState(this);
             conversationState = new ConversationState(this);
+            battleState = new BattleState(this);
             gameStateManager.ChangeState((TitleIntroState)titleIntroState, PlayerIndex.One);
             characterManager = CharacterManager.Instance;
         }
@@ -81,18 +86,12 @@ namespace AvatarAdventure
             playerAnimations.Add(AnimationKey.WalkUp, animation);
             base.Initialize();
         }
-        
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             AvatarComponents.MoveManager.FillMoves();
-            AvatarComponents.AvatarManager.FromFile(@".\Data\Avatars.csv", Content);
-            // TODO:  load moves from files like avatars
+            AvatarComponents.AvatarManager.FromFile(@".\Data\avatars.csv", Content);
         }
-
-
-
-
         protected override void UnloadContent()
         {
         }
