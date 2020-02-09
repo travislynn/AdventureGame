@@ -80,7 +80,6 @@ namespace AvatarAdventure.GameStates
             conversation.Update(gameTime);
             base.Update(gameTime);
         }
-/
 
         public override void Draw(GameTime gameTime)
         {
@@ -96,13 +95,24 @@ namespace AvatarAdventure.GameStates
             // fails converting pcharacter to character, talking to first pchar
             // todo: better way of getting char.Converstaion from ICharacter.  Move to GetConverstaion or use base class
 
-            string charConvo = character is Character character1 ? character1.Conversation: ((PCharacter)character).Conversation;
-            if (ConversationManager.ConversationList.ContainsKey(charConvo))
+            // fix 1, use reflection to determine type of character.  But only 2 types and they both have Conversation.  Must be a better way
+            //string charConvo = character is Character character1 ? character1.Conversation: ((PCharacter)character).Conversation;
+            //if (ConversationManager.ConversationList.ContainsKey(charConvo))
+            //    this.conversation =
+            //        ConversationManager.ConversationList[charConvo];
+            //else
+            //    manager.PopState();
+
+
+            // fix 2 by adding readonly conversation to ICharacter
+            if (ConversationManager.ConversationList.ContainsKey(character.Conversation))
                 this.conversation =
-                    ConversationManager.ConversationList[charConvo];
+                    ConversationManager.ConversationList[character.Conversation];
             else
                 manager.PopState();
 
+
+            // original, fails converting pcharacter to character
             //if (ConversationManager.ConversationList.ContainsKey(((Character)character).Conversation))
             //    this.conversation =
             //        ConversationManager.ConversationList[((Character)character).Conversation];

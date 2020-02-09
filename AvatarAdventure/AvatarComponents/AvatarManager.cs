@@ -33,6 +33,8 @@ namespace AvatarAdventure.AvatarComponents
                 return (Avatar)avatarList[name].Clone();
             return null;
         }
+
+        // todo: use json instead of csv
         public static void FromFile(string fileName, ContentManager content)
         {
             using (Stream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
