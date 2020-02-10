@@ -9,14 +9,10 @@ namespace AvatarAdventure.CharacterComponents
 {
     public sealed class CharacterManager
     {
-        private static readonly CharacterManager instance = new CharacterManager();
+        private readonly Dictionary<string, ICharacter> _characters = new Dictionary<string, ICharacter>();
 
-        private Dictionary<string, ICharacter> characters = new Dictionary<string, ICharacter>();
-
-        public static CharacterManager Instance
-        {
-            get { return instance; }
-        }
+        // Static constructor
+        public static CharacterManager Instance { get; } = new CharacterManager();
 
         private CharacterManager()
         {
@@ -24,16 +20,16 @@ namespace AvatarAdventure.CharacterComponents
 
         public ICharacter GetCharacter(string name)
         {
-            if (characters.ContainsKey(name))
-                return characters[name];
+            if (_characters.ContainsKey(name))
+                return _characters[name];
             return null;
         }
 
         public void AddCharacter(string name, ICharacter character)
         {
-            if (!characters.ContainsKey(name))
+            if (!_characters.ContainsKey(name))
             {
-                characters.Add(name, character);
+                _characters.Add(name, character);
             }
         }
     }

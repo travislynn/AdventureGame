@@ -18,8 +18,6 @@ namespace AvatarAdventure
 {
     public class Game1 : Game
     {
-        private IConversationState _conversationState;
-
 
         public SpriteBatch SpriteBatch { get; private set; }
 
@@ -31,6 +29,8 @@ namespace AvatarAdventure
 
         public IGamePlayState GamePlayState { get; }
 
+        public IConversationState ConversationState { get; }
+
         public IBattleState BattleState { get; }
 
         public ILevelUpState LevelUpState { get; }
@@ -39,7 +39,6 @@ namespace AvatarAdventure
 
         public IDamageState DamageState { get; }
 
-
         public Dictionary<AnimationKey, Animation> PlayerAnimations { get; } = new Dictionary<AnimationKey, Animation>();
 
         public CharacterManager CharacterManager { get; }
@@ -47,52 +46,72 @@ namespace AvatarAdventure
         public Game1()
         {
             var graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
+
             ScreenRectangle = new Rectangle(0, 0, 1280, 720);
+
             graphics.PreferredBackBufferWidth = ScreenRectangle.Width;
             graphics.PreferredBackBufferHeight = ScreenRectangle.Height;
+
             var gameStateManager = new GameStateManager(this);
             Components.Add(gameStateManager);
+
             this.IsMouseVisible = true;
+
             TitleIntroState = new TitleIntroState(this);
             StartMenuState = new MainMenuState(this);
             GamePlayState = new GamePlayState(this);
-            _conversationState = new ConversationState(this);
+            ConversationState = new ConversationState(this);
             BattleState = new BattleState(this);
             BattleOverState = new BattleOverState(this);
             DamageState = new DamageState(this);
             LevelUpState = new LevelUpState(this);
+
+            // begin game at TitleIntroState
             gameStateManager.ChangeState((TitleIntroState)TitleIntroState, PlayerIndex.One);
+
             CharacterManager = CharacterManager.Instance;
         }
 
         protected override void Initialize()
         {
             Components.Add(new Xin(this));
+
+            // configure player animations
             Animation animation = new Animation(3, 64, 64, 0, 0);
             PlayerAnimations.Add(AnimationKey.WalkDown, animation);
+
             animation = new Animation(3, 64, 64, 0, 64);
             PlayerAnimations.Add(AnimationKey.WalkLeft, animation);
+
             animation = new Animation(3, 64, 64, 0, 128);
             PlayerAnimations.Add(AnimationKey.WalkRight, animation);
+
             animation = new Animation(3, 64, 64, 0, 192);
             PlayerAnimations.Add(AnimationKey.WalkUp, animation);
+
             base.Initialize();
         }
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+
             AvatarComponents.MoveManager.FillMoves();
+
             AvatarComponents.AvatarManager.FromFile(@".\Data\avatars.csv", Content);
+
+            // TODO:  MoveManager.FromFile() instead of static coded files
         }
         protected override void UnloadContent()
         {
         }
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-           Keyboard.GetState().IsKeyDown(Keys.Escape))
+            // ESC = Exit
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
