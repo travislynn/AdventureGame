@@ -22,39 +22,70 @@ namespace AvatarAdventure
         IGamePlayState gamePlayState;
         IConversationState conversationState;
         IBattleState battleState;
+        ILevelUpState levelUpState;
+        private IBattleOverState battleOverState;
+        private IDamageState damageState;
+
         static Rectangle screenRectangle;
+
+
         public SpriteBatch SpriteBatch
         {
             get { return spriteBatch; }
         }
+
         public static Rectangle ScreenRectangle
         {
             get { return screenRectangle; }
         }
+
         public ITitleIntroState TitleIntroState
         {
             get { return titleIntroState; }
         }
+
         public IMainMenuState StartMenuState
         {
             get { return startMenuState; }
         }
+
         public IGamePlayState GamePlayState
         {
             get { return gamePlayState; }
         }
+
         public IBattleState BattleState
         {
             get { return battleState; }
         }
-        public Dictionary<AnimationKey, Animation> PlayerAnimations
+
+        public ILevelUpState LevelUpState
         {
-            get { return playerAnimations; }
+            get { return levelUpState; }
         }
+
+        public IBattleOverState BattleOverState
+        {
+            get { return battleOverState; }
+        }
+
+        public IDamageState DamageState
+        {
+            get { return damageState;  }
+        }
+
+
+
+    public Dictionary<AnimationKey, Animation> PlayerAnimations
+    {
+        get { return playerAnimations; }
+    }
+
         public CharacterManager CharacterManager
         {
             get { return characterManager; }
         }
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -70,9 +101,13 @@ namespace AvatarAdventure
             gamePlayState = new GamePlayState(this);
             conversationState = new ConversationState(this);
             battleState = new BattleState(this);
+            battleOverState = new BattleOverState(this);
+            damageState = new DamageState(this);
+            levelUpState = new LevelUpState(this);
             gameStateManager.ChangeState((TitleIntroState)titleIntroState, PlayerIndex.One);
             characterManager = CharacterManager.Instance;
         }
+
         protected override void Initialize()
         {
             Components.Add(new Xin(this));

@@ -132,21 +132,24 @@ namespace AvatarAdventure.GameStates
                     }
                 }
             }
+            
             if (Xin.CheckKeyReleased(Keys.B))
             {
                 foreach (string s in map.Characters.Keys)
                 {
                     ICharacter c = CharacterManager.Instance.GetCharacter(s);
                     float distance = Vector2.Distance(player.Sprite.Center, c.Sprite.Center);
-                    if (Math.Abs(distance) < 72f)
+                    if (Math.Abs(distance) < 72f && !c.Battled)
                     {
                         GameRef.BattleState.SetAvatars(player.CurrentAvatar, c.BattleAvatar);
                         manager.PushState(
-                        (BattleState)GameRef.BattleState,
-                        PlayerIndexInControl);
+                            (BattleState)GameRef.BattleState,
+                            PlayerIndexInControl);
+                        c.Battled = true;
                     }
                 }
             }
+
             base.Update(gameTime);
         }
 

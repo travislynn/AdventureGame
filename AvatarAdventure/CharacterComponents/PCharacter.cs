@@ -48,6 +48,10 @@ namespace AvatarAdventure.CharacterComponents
         {
             get { return conversation; }
         }
+
+        public bool Battled { get; set; }
+
+
         #endregion
         #region Constructor Region
         private PCharacter()

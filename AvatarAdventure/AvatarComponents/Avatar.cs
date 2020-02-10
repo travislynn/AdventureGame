@@ -306,16 +306,18 @@ namespace AvatarAdventure.AvatarComponents
         {
             return (long)((float)WinBattle(target) * .5f);
         }
+
         public bool CheckLevelUp()
         {
             bool leveled = false;
-            if (experience >= 50 * (1 + (long)Math.Pow(level, 2.5)))
+            if (experience >= 50 * (1 + (long)Math.Pow((level - 1), 2.5)))
             {
                 leveled = true;
                 level++;
             }
             return leveled;
         }
+
 
         public void AssignPoint(string s, int p)
         {
@@ -331,10 +333,11 @@ namespace AvatarAdventure.AvatarComponents
                     speed += p;
                     break;
                 case "Health":
-                    health += p * 5;
+                    health += p;
                     break;
             }
         }
+
 
         public static Avatar FromString(string description, ContentManager content)
         {
