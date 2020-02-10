@@ -96,9 +96,12 @@
     <Compile Include="TileEngine\AnimationKey.cs" />
     <Compile Include="TileEngine\Camera.cs" />
     <Compile Include="TileEngine\Engine.cs" />
+    <Compile Include="TileEngine\Portal.cs" />
+    <Compile Include="TileEngine\PortalLayer.cs" />
     <Compile Include="TileEngine\TileLayer.cs" />
     <Compile Include="TileEngine\TileMap.cs" />
     <Compile Include="TileEngine\TileSet.cs" />
+    <Compile Include="TileEngine\World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -116,6 +119,7 @@
     <Content Include="Content\AvatarImages\wind.PNG" />
     <Content Include="Content\CharacterSprites\teacherone.png" />
     <Content Include="Content\CharacterSprites\teachertwo.png" />
+    <Content Include="Content\GameScreens\levelup-menu.png" />
     <Content Include="Content\GameScreens\menuscreen.png" />
     <Content Include="Content\GameScreens\titlescreen.png" />
     <Content Include="Content\Misc\avatarborder.png" />

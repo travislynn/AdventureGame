@@ -20,6 +20,7 @@ namespace AvatarAdventure.TileEngine
         TileLayer decorationLayer;
         Dictionary<string, Point> characters;
         CharacterManager characterManager;
+        PortalLayer portalLayer;
         [ContentSerializer]
         int mapWidth;
         [ContentSerializer]
@@ -58,6 +59,12 @@ namespace AvatarAdventure.TileEngine
             set { buildingLayer = value; }
         }
         [ContentSerializer]
+        public PortalLayer PortalLayer
+        {
+            get { return portalLayer; }
+            private set { portalLayer = value; }
+        }
+        [ContentSerializer]
         public Dictionary<string, Point> Characters
         {
             get { return characters; }
@@ -84,12 +91,13 @@ namespace AvatarAdventure.TileEngine
         private TileMap()
         {
         }
-        private TileMap(TileSet tileSet, string mapName)
+        private TileMap(TileSet tileSet, string mapName, PortalLayer portals = null)
         {
             this.characters = new Dictionary<string, Point>();
             this.tileSet = tileSet;
             this.mapName = mapName;
             characterManager = CharacterManager.Instance;
+            portalLayer = portals != null ? portals : new PortalLayer();
         }
         public TileMap(
         TileSet tileSet,
@@ -97,8 +105,9 @@ namespace AvatarAdventure.TileEngine
         TileLayer edgeLayer,
         TileLayer buildingLayer,
         TileLayer decorationLayer,
-        string mapName)
-        : this(tileSet, mapName)
+        string mapName,
+        PortalLayer portalLayer = null)
+        : this(tileSet, mapName, portalLayer)
         {
             this.groundLayer = groundLayer;
             this.edgeLayer = edgeLayer;
@@ -218,5 +227,6 @@ namespace AvatarAdventure.TileEngine
             spriteBatch.End();
         }
         #endregion
-    }
+    }
+
 }

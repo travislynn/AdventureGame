@@ -88,6 +88,7 @@ namespace AvatarAdventure.GameStates
             if (Xin.CheckKeyReleased(Keys.P))
                 manager.PopState();
             combatScene.Update(gameTime, index.Value);
+
             if (Xin.CheckKeyReleased(Keys.Space) || Xin.CheckKeyReleased(Keys.Enter))
             {
                 manager.PushState((DamageState)GameRef.DamageState, index);

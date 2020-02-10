@@ -49,7 +49,17 @@ namespace AvatarAdventure.CharacterComponents
             get { return conversation; }
         }
 
-        public bool Battled { get; set; }
+        public bool Battled
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
 
         #endregion

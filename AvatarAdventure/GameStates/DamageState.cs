@@ -82,8 +82,7 @@ namespace AvatarAdventure.GameStates
         public override void Update(GameTime gameTime)
         {
             PlayerIndex index;
-            if ((cTimer > TimeSpan.FromSeconds(4) || !enemy.Alive || !player.Alive) &&
-           dTimer > TimeSpan.FromSeconds(3))
+            if ((cTimer > TimeSpan.FromSeconds(4) || !enemy.Alive || !player.Alive) && dTimer > TimeSpan.FromSeconds(3))
             {
                 if (!enemy.Alive || !player.Alive)
                 {
@@ -97,8 +96,7 @@ namespace AvatarAdventure.GameStates
                     manager.PopState();
                 }
             }
-            else if (cTimer > TimeSpan.FromSeconds(2) && first && enemy.Alive &&
-           player.Alive)
+            else if (cTimer > TimeSpan.FromSeconds(2) && first && enemy.Alive && player.Alive)
             {
                 first = false;
                 dTimer = TimeSpan.Zero;
@@ -139,10 +137,8 @@ namespace AvatarAdventure.GameStates
             Vector2 location = new Vector2(25, 475);
             if (turn == CurrentTurn.Players)
             {
-                GameRef.SpriteBatch.DrawString(font, player.Name + " uses " +
-               playerMove.Name + ".", location, Color.Black);
-                if (playerMove.Target == Target.Enemy && playerMove.MoveType ==
-               MoveType.Attack)
+                GameRef.SpriteBatch.DrawString(font, player.Name + " uses " + playerMove.Name + ".", location, Color.Black);
+                if (playerMove.Target == Target.Enemy && playerMove.MoveType == MoveType.Attack)
                 {
                     location.Y += avatarFont.LineSpacing;
                     if (Avatar.GetMoveModifier(playerMove.MoveElement, enemy.Element) < 1f)
@@ -227,4 +223,4 @@ namespace AvatarAdventure.GameStates
         }
         #endregion
     }
-}
+}
