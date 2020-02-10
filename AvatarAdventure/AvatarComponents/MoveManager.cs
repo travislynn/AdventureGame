@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AvatarAdventure.AvatarComponents.Moves;
 
 namespace AvatarAdventure.AvatarComponents
 {
@@ -23,17 +24,17 @@ namespace AvatarAdventure.AvatarComponents
             // TODO:  Abstract moves to a string, load from csv/source like avatars
             AddMove(new Tackle());
             AddMove(new Block());
-            //AddMove(new Haste());
-            //AddMove(new Bless());
-            //AddMove(new Curse());
-            //AddMove(new Heal());
-            //AddMove(new Flare());
-            //AddMove(new Shock());
-            //AddMove(new Gust());
-            //AddMove(new Frostbite());
-            //AddMove(new Shade());
-            //AddMove(new Burst());
-            //AddMove(new RockThrow());
+            AddMove(new Haste());
+            AddMove(new Bless());
+            AddMove(new Curse());
+            AddMove(new Heal());
+            AddMove(new Flare());
+            AddMove(new Shock());
+            AddMove(new Gust());
+            AddMove(new Frostbite());
+            AddMove(new Shade());
+            AddMove(new Burst());
+            AddMove(new RockThrow());
         }
         public static IMove GetMove(string name)
         {

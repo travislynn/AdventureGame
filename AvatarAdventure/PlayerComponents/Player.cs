@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using AvatarAdventure;
@@ -128,6 +129,11 @@ namespace AvatarAdventure.PlayerComponents
         {
             base.Draw(gameTime);
             sprite.Draw(gameTime, gameRef.SpriteBatch);
+        }
+
+        public bool Save(BinaryWriter writer)
+        {
+            return true;
         }
 
         #endregion

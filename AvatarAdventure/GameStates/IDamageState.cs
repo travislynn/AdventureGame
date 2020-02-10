@@ -1,4 +1,5 @@
 ﻿using AvatarAdventure.AvatarComponents;
+using AvatarAdventure.AvatarComponents.Moves;
 
 namespace AvatarAdventure.GameStates
 {

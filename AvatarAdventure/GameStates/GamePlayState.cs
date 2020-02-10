@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,8 +42,6 @@ namespace AvatarAdventure.GameStates
             base.Initialize();
         }
 
-
-
         public override void Update(GameTime gameTime)
         {
             Vector2 motion = Vector2.Zero;
@@ -53,22 +52,19 @@ namespace AvatarAdventure.GameStates
                 motion.Y = -1;
                 player.Sprite.CurrentAnimation = AnimationKey.WalkLeft;
             }
-            else if (Xin.KeyboardState.IsKeyDown(Keys.W) &&
-           Xin.KeyboardState.IsKeyDown(Keys.D))
+            else if (Xin.KeyboardState.IsKeyDown(Keys.W) && Xin.KeyboardState.IsKeyDown(Keys.D))
             {
                 motion.X = 1;
                 motion.Y = -1;
                 player.Sprite.CurrentAnimation = AnimationKey.WalkRight;
             }
-            else if (Xin.KeyboardState.IsKeyDown(Keys.S) &&
-           Xin.KeyboardState.IsKeyDown(Keys.A))
+            else if (Xin.KeyboardState.IsKeyDown(Keys.S) && Xin.KeyboardState.IsKeyDown(Keys.A))
             {
                 motion.X = -1;
                 motion.Y = 1;
                 player.Sprite.CurrentAnimation = AnimationKey.WalkLeft;
             }
-            else if (Xin.KeyboardState.IsKeyDown(Keys.S) &&
-           Xin.KeyboardState.IsKeyDown(Keys.D))
+            else if (Xin.KeyboardState.IsKeyDown(Keys.S) && Xin.KeyboardState.IsKeyDown(Keys.D))
             {
                 motion.X = 1;
                 motion.Y = 1;
@@ -161,8 +157,7 @@ namespace AvatarAdventure.GameStates
                         player.Position = new Vector2(
                         p.DestinationTile.X * Engine.TileWidth,
                         p.DestinationTile.Y * Engine.TileHeight);
-                        camera.LockToSprite(world.CurrentMap, player.Sprite,
-                       Game1.ScreenRectangle);
+                        camera.LockToSprite(world.CurrentMap, player.Sprite, Game1.ScreenRectangle);
                         return;
                     }
                 }
@@ -183,9 +178,22 @@ namespace AvatarAdventure.GameStates
                     }
                 }
             }
-            base.Update(gameTime);
-        }
 
+            // F1 = Save Game
+            // Produces:
+            // avatar.sav
+            // level1Lance,teacherone,WalkDown.Water,Water,0,100,1,9,12,10,50,-3,Tackle,Block*Marissa,teachertwo,WalkDown,MarissaHello,0-Wind,Wind,0,100,1,10,10,12,50,50,Tackle,Block.Earth,Earth,0,100,1,10,10,9,60,60,Tackle,Block
+            if (Xin.CheckKeyReleased(Keys.F1))
+            {
+                FileStream stream = new FileStream("avatars.sav", FileMode.Create, FileAccess.Write);
+                BinaryWriter writer = new BinaryWriter(stream);
+                world.Save(writer);
+                player.Save(writer);
+                writer.Close();
+                stream.Close();
+            }
+            base.Update(gameTime);
+        }
 
         public override void Draw(GameTime gameTime)
         {
@@ -234,7 +242,7 @@ namespace AvatarAdventure.GameStates
             ICharacter teacherOne = Character.FromString(GameRef,
                 "Lance,teacherone,WalkDown,teacherone,water");
             ICharacter teacherTwo = PCharacter.FromString(GameRef,
-                "Marissa,teachertwo,WalkDown,tearchertwo,wind,earth");
+                "Marissa,teachertwo,WalkDown,tearchertwo,0,wind,earth");
 
             teacherOne.SetConversation("LanceHello");
             teacherTwo.SetConversation("MarissaHello");

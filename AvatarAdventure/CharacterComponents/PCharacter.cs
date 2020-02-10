@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace AvatarAdventure.CharacterComponents
         private string name;
         private Avatar[] avatars = new Avatar[AvatarLimit];
         private int currentAvatar;
+        private string textureName;
+
         private Avatar givingAvatar;
         private AnimatedSprite sprite;
         private string conversation;
@@ -80,17 +83,50 @@ namespace AvatarAdventure.CharacterComponents
                 BuildAnimations();
             PCharacter character = new PCharacter();
             string[] parts = characterString.Split(',');
+
+
+            //"Marissa 0 name,
+            //teachertwo 1 textureName,
+            //WalkDown 2 currentanimationkey,
+            //tearchertwo 3 conversations,
+            //0  - 4 - adding this for currentAvatar
+            //wind 4 ??,
+            //earth 5 ??
             character.name = parts[0];
+            character.textureName = parts[1];
             Texture2D texture = game.Content.Load<Texture2D>(@"CharacterSprites\" + parts[1]);
             character.sprite = new AnimatedSprite(texture, gameRef.PlayerAnimations);
             AnimationKey key = AnimationKey.WalkDown;
             Enum.TryParse<AnimationKey>(parts[2], true, out key);
             character.sprite.CurrentAnimation = key;
             character.conversation = parts[3];
-            for (int i = 4; i < 10 && i < parts.Length; i++)
-                character.avatars[i - 4] = AvatarManager.GetAvatar(parts[i].ToLowerInvariant());
+            // ERROR HERE
+            character.currentAvatar = int.Parse(parts[4]);
+            for (int i = 5; i < 11 && i < parts.Length; i++)
+                character.avatars[i - 5] = AvatarManager.GetAvatar(parts[i].ToLowerInvariant());
             return character;
         }
+        public bool Save(BinaryWriter writer)
+        {
+            StringBuilder b = new StringBuilder();
+            b.Append(name);
+            b.Append(",");
+            b.Append(textureName);
+            b.Append(",");
+            b.Append(sprite.CurrentAnimation);
+            b.Append(",");
+            b.Append(conversation);
+            b.Append(",");
+            b.Append(currentAvatar);
+            writer.Write(b.ToString());
+            foreach (Avatar a in avatars)
+            {
+                if (a != null)
+                    a.Save(writer);
+            }
+            return true;
+        }
+
 
         public void ChangeAvatar(int index)
         {
@@ -103,9 +139,7 @@ namespace AvatarAdventure.CharacterComponents
         {
             this.conversation = newConversation;
         }
-        public static void Save(string characterName)
-        {
-        }
+        
         public void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);

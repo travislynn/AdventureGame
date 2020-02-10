@@ -59,6 +59,17 @@ namespace AvatarAdventure.TileEngine
             }
             throw new Exception("Map name or portal name not found.");
         }
+
+        public bool Save(BinaryWriter writer)
+        {
+            writer.Write(currentMapName);
+            foreach (string s in maps.Keys)
+                maps[s].Save(writer);
+            return true;
+        }
+
+
+
         #endregion
     }
 }

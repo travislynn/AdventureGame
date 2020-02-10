@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AvatarAdventure;
 using AvatarAdventure.AvatarComponents;
+using AvatarAdventure.AvatarComponents.Moves;
 using AvatarAdventure.Components;
 using AvatarAdventure.ConversationComponents;
 using AvatarAdventure.GameStates;

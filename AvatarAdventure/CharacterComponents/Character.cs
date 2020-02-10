@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using AvatarAdventure.AvatarComponents;
 using AvatarAdventure.TileEngine;
 using Microsoft.Xna.Framework;
@@ -18,6 +20,8 @@ namespace AvatarAdventure.CharacterComponents
         private Avatar givingAvatar;
         private AnimatedSprite sprite;
         private string conversation;
+        private string textureName;
+
         private static Game1 gameRef;
         private static Dictionary<AnimationKey, Animation> characterAnimations = new Dictionary<AnimationKey, Animation>();
         #endregion
@@ -67,6 +71,7 @@ namespace AvatarAdventure.CharacterComponents
             Character character = new Character();
             string[] parts = characterString.Split(',');
             character.name = parts[0];
+            character.textureName = parts[1];
             Texture2D texture = game.Content.Load<Texture2D>(@"CharacterSprites\" + parts[1]);
             character.sprite = new AnimatedSprite(texture, gameRef.PlayerAnimations);
             AnimationKey key = AnimationKey.WalkDown;
@@ -76,13 +81,26 @@ namespace AvatarAdventure.CharacterComponents
             character.battleAvatar = AvatarManager.GetAvatar(parts[4].ToLowerInvariant());
             return character;
         }
+        public bool Save(BinaryWriter writer)
+        {
+            StringBuilder b = new StringBuilder();
+            b.Append(name);
+            b.Append(",");
+            b.Append(textureName);
+            b.Append(",");
+            b.Append(sprite.CurrentAnimation);
+            writer.Write(b.ToString());
+            if (givingAvatar != null)
+                givingAvatar.Save(writer);
+            if (battleAvatar != null)
+                battleAvatar.Save(writer);
+            return true;
+        }
         public void SetConversation(string newConversation)
         {
             this.conversation = newConversation;
         }
-        public static void Save(string characterName)
-        {
-        }
+        
         public void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);

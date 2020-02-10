@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AvatarAdventure.AvatarComponents.Moves;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -390,6 +392,36 @@ namespace AvatarAdventure.AvatarComponents
             return avatar;
         }
 
+        public bool Save(BinaryWriter writer)
+        {
+            StringBuilder b = new StringBuilder();
+            b.Append(name);
+            b.Append(",");
+            b.Append(element);
+            b.Append(",");
+            b.Append(experience);
+            b.Append(",");
+            b.Append(costToBuy);
+            b.Append(",");
+            b.Append(level);
+            b.Append(",");
+            b.Append(attack);
+            b.Append(",");
+            b.Append(defense);
+            b.Append(",");
+            b.Append(speed);
+            b.Append(",");
+            b.Append(health);
+            b.Append(",");
+            b.Append(currentHealth);
+            foreach (string s in knownMoves.Keys)
+            {
+                b.Append(",");
+                b.Append(s);
+            }
+            writer.Write(b.ToString());
+            return true;
+        }
 
     }
 }

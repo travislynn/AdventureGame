@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,5 +22,6 @@ namespace AvatarAdventure.CharacterComponents
         void SetConversation(string newConversation);
         void Update(GameTime gameTime);
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        bool Save(BinaryWriter writer);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -226,6 +227,17 @@ namespace AvatarAdventure.TileEngine
             }
             spriteBatch.End();
         }
+
+        public bool Save(BinaryWriter writer)
+        {
+            foreach (string s in characters.Keys)
+            {
+                ICharacter c = CharacterManager.Instance.GetCharacter(s);
+                c.Save(writer);
+            }
+            return true;
+        }
+
         #endregion
     }
 

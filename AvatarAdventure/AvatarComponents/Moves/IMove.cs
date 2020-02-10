@@ -1,5 +1,25 @@
-﻿namespace AvatarAdventure.AvatarComponents
+﻿namespace AvatarAdventure.AvatarComponents.Moves
 {
+    public enum Target
+    {
+        Self, Enemy
+    }
+
+    public enum MoveType
+    {
+        Attack, Heal, Buff, Debuff, Status
+    }
+
+    public enum Status
+    {
+        Normal, Sleep, Poison, Paralysis
+    }
+
+    public enum MoveElement
+    {
+        None, Dark, Earth, Fire, Light, Water, Wind
+    }
+
     public interface IMove
     {
         string Name { get; }

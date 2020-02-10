@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AvatarAdventure;
 using AvatarAdventure.AvatarComponents;
+using AvatarAdventure.AvatarComponents.Moves;
 using AvatarAdventure.GameStates;
 
 namespace AvatarAdventure.GameStates
