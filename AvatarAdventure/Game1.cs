@@ -18,116 +18,70 @@ namespace AvatarAdventure
 {
     public class Game1 : Game
     {
-        private SpriteBatch _spriteBatch;
-        private readonly Dictionary<AnimationKey, Animation> _playerAnimations = new Dictionary<AnimationKey, Animation>();
-        private readonly CharacterManager _characterManager;
-        private readonly ITitleIntroState _titleIntroState;
-        private readonly IMainMenuState _startMenuState;
-        private readonly IGamePlayState _gamePlayState;
         private IConversationState _conversationState;
-        private readonly IBattleState _battleState;
-        private readonly ILevelUpState _levelUpState;
-        private readonly IBattleOverState _battleOverState;
-        private readonly IDamageState _damageState;
-
-        static Rectangle _screenRectangle;
 
 
-        public SpriteBatch SpriteBatch
-        {
-            get { return _spriteBatch; }
-        }
+        public SpriteBatch SpriteBatch { get; private set; }
 
-        public static Rectangle ScreenRectangle
-        {
-            get { return _screenRectangle; }
-        }
+        public static Rectangle ScreenRectangle { get; private set; }
 
-        public ITitleIntroState TitleIntroState
-        {
-            get { return _titleIntroState; }
-        }
+        public ITitleIntroState TitleIntroState { get; }
 
-        public IMainMenuState StartMenuState
-        {
-            get { return _startMenuState; }
-        }
+        public IMainMenuState StartMenuState { get; }
 
-        public IGamePlayState GamePlayState
-        {
-            get { return _gamePlayState; }
-        }
+        public IGamePlayState GamePlayState { get; }
 
-        public IBattleState BattleState
-        {
-            get { return _battleState; }
-        }
+        public IBattleState BattleState { get; }
 
-        public ILevelUpState LevelUpState
-        {
-            get { return _levelUpState; }
-        }
+        public ILevelUpState LevelUpState { get; }
 
-        public IBattleOverState BattleOverState
-        {
-            get { return _battleOverState; }
-        }
+        public IBattleOverState BattleOverState { get; }
 
-        public IDamageState DamageState
-        {
-            get { return _damageState;  }
-        }
+        public IDamageState DamageState { get; }
 
 
+        public Dictionary<AnimationKey, Animation> PlayerAnimations { get; } = new Dictionary<AnimationKey, Animation>();
 
-    public Dictionary<AnimationKey, Animation> PlayerAnimations
-    {
-        get { return _playerAnimations; }
-    }
-
-        public CharacterManager CharacterManager
-        {
-            get { return _characterManager; }
-        }
+        public CharacterManager CharacterManager { get; }
 
         public Game1()
         {
             var graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            _screenRectangle = new Rectangle(0, 0, 1280, 720);
+            ScreenRectangle = new Rectangle(0, 0, 1280, 720);
             graphics.PreferredBackBufferWidth = ScreenRectangle.Width;
             graphics.PreferredBackBufferHeight = ScreenRectangle.Height;
             var gameStateManager = new GameStateManager(this);
             Components.Add(gameStateManager);
             this.IsMouseVisible = true;
-            _titleIntroState = new TitleIntroState(this);
-            _startMenuState = new MainMenuState(this);
-            _gamePlayState = new GamePlayState(this);
+            TitleIntroState = new TitleIntroState(this);
+            StartMenuState = new MainMenuState(this);
+            GamePlayState = new GamePlayState(this);
             _conversationState = new ConversationState(this);
-            _battleState = new BattleState(this);
-            _battleOverState = new BattleOverState(this);
-            _damageState = new DamageState(this);
-            _levelUpState = new LevelUpState(this);
-            gameStateManager.ChangeState((TitleIntroState)_titleIntroState, PlayerIndex.One);
-            _characterManager = CharacterManager.Instance;
+            BattleState = new BattleState(this);
+            BattleOverState = new BattleOverState(this);
+            DamageState = new DamageState(this);
+            LevelUpState = new LevelUpState(this);
+            gameStateManager.ChangeState((TitleIntroState)TitleIntroState, PlayerIndex.One);
+            CharacterManager = CharacterManager.Instance;
         }
 
         protected override void Initialize()
         {
             Components.Add(new Xin(this));
             Animation animation = new Animation(3, 64, 64, 0, 0);
-            _playerAnimations.Add(AnimationKey.WalkDown, animation);
+            PlayerAnimations.Add(AnimationKey.WalkDown, animation);
             animation = new Animation(3, 64, 64, 0, 64);
-            _playerAnimations.Add(AnimationKey.WalkLeft, animation);
+            PlayerAnimations.Add(AnimationKey.WalkLeft, animation);
             animation = new Animation(3, 64, 64, 0, 128);
-            _playerAnimations.Add(AnimationKey.WalkRight, animation);
+            PlayerAnimations.Add(AnimationKey.WalkRight, animation);
             animation = new Animation(3, 64, 64, 0, 192);
-            _playerAnimations.Add(AnimationKey.WalkUp, animation);
+            PlayerAnimations.Add(AnimationKey.WalkUp, animation);
             base.Initialize();
         }
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
             AvatarComponents.MoveManager.FillMoves();
             AvatarComponents.AvatarManager.FromFile(@".\Data\avatars.csv", Content);
         }
