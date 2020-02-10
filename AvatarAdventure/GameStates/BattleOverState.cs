@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AvatarAdventure;
-using AvatarAdventure.AvatarComponents;
+﻿using AvatarAdventure.AvatarComponents;
 using AvatarAdventure.Components;
-using AvatarAdventure.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using AvatarAdventure.AvatarComponents.Moves;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

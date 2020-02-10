@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AvatarAdventure.CharacterComponents;
 using AvatarAdventure.Components;
 using AvatarAdventure.ConversationComponents;
-using AvatarAdventure.GameStates;
 using AvatarAdventure.PlayerComponents;
 using Microsoft.Xna.Framework.Input;
 

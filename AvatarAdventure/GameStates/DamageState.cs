@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AvatarAdventure;
 using AvatarAdventure.AvatarComponents;
 using AvatarAdventure.AvatarComponents.Moves;
-using AvatarAdventure.GameStates;
 
 namespace AvatarAdventure.GameStates
 {

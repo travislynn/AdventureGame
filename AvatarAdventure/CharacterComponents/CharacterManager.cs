@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AvatarAdventure.CharacterComponents;
+﻿using System.Collections.Generic;
 
 namespace AvatarAdventure.CharacterComponents
 {
@@ -20,9 +15,7 @@ namespace AvatarAdventure.CharacterComponents
 
         public ICharacter GetCharacter(string name)
         {
-            if (_characters.ContainsKey(name))
-                return _characters[name];
-            return null;
+            return _characters.ContainsKey(name) ? _characters[name] : null;
         }
 
         public void AddCharacter(string name, ICharacter character)
