@@ -6,22 +6,12 @@ namespace AvatarAdventure.TileEngine
 {
     public class PortalLayer
     {
-        #region Field Region
-        private Dictionary<Rectangle, Portal> portals;
-        #endregion
-        #region Property Region
         [ContentSerializer]
-        public Dictionary<Rectangle, Portal> Portals
-        {
-            get { return portals; }
-            private set { portals = value; }
-        }
-        #endregion
-        #region Constructor Region
+        public Dictionary<Rectangle, Portal> Portals { get; private set; }
+
         public PortalLayer()
         {
-            portals = new Dictionary<Rectangle, Portal>();
+            Portals = new Dictionary<Rectangle, Portal>();
         }
-        #endregion
     }
 }

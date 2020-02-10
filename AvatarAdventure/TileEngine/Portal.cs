@@ -5,32 +5,15 @@ namespace AvatarAdventure.TileEngine
 {
     public class Portal
     {
-        #region Field Region
-        Point sourceTile;
-        Point destinationTile;
-        string destinationLevel;
-        #endregion
-        #region Property Region
         [ContentSerializer]
-        public Point SourceTile
-        {
-            get { return sourceTile; }
-            private set { sourceTile = value; }
-        }
+        public Point SourceTile { get; private set; }
+
         [ContentSerializer]
-        public Point DestinationTile
-        {
-            get { return destinationTile; }
-            private set { destinationTile = value; }
-        }
+        public Point DestinationTile { get; private set; }
+
         [ContentSerializer]
-        public string DestinationLevel
-        {
-            get { return destinationLevel; }
-            private set { destinationLevel = value; }
-        }
-        #endregion
-        #region Constructor Region
+        public string DestinationLevel { get; private set; }
+
         private Portal()
         {
         }
@@ -40,6 +23,5 @@ namespace AvatarAdventure.TileEngine
             DestinationTile = destinationTile;
             DestinationLevel = destinationLevel;
         }
-        #endregion
     }
 }
