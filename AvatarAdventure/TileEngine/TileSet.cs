@@ -6,51 +6,30 @@ namespace AvatarAdventure.TileEngine
 {
     public class TileSet
     {
+        private readonly Rectangle[] _sourceRectangles;
+
         public int TilesWide = 8;
         public int TilesHigh = 8;
         public int TileWidth = 64;
         public int TileHeight = 64;
-        
-        #region Fields and Properties
-
-        Texture2D image;
-        string imageName;
-        Rectangle[] sourceRectangles;
-
-        #endregion
-        #region Property Region
 
         [ContentSerializerIgnore]
-        public Texture2D Texture
-        {
-            get { return image; }
-            set { image = value; }
-        }
+        public Texture2D Texture { get; set; }
 
         [ContentSerializer]
-        public string TextureName
-        {
-            get { return imageName; }
-            set { imageName = value; }
-        }
+        public string TextureName { get; set; }
 
         [ContentSerializerIgnore]
-        public Rectangle[] SourceRectangles
-        {
-            get { return (Rectangle[])sourceRectangles.Clone(); }
-        }
-
-        #endregion
-        #region Constructor Region
+        public Rectangle[] SourceRectangles => (Rectangle[])_sourceRectangles.Clone();
 
         public TileSet()
         {
-            sourceRectangles = new Rectangle[TilesWide * TilesHigh];
+            _sourceRectangles = new Rectangle[TilesWide * TilesHigh];
             int tile = 0;
             for (int y = 0; y < TilesHigh; y++)
             for (int x = 0; x < TilesWide; x++)
             {
-                sourceRectangles[tile] = new Rectangle(
+                _sourceRectangles[tile] = new Rectangle(
                     x * TileWidth,
                     y * TileHeight,
                     TileWidth,
@@ -64,12 +43,12 @@ namespace AvatarAdventure.TileEngine
             TilesHigh = tilesHigh;
             TileWidth = tileWidth;
             TileHeight = tileHeight;
-            sourceRectangles = new Rectangle[TilesWide * TilesHigh];
+            _sourceRectangles = new Rectangle[TilesWide * TilesHigh];
             int tile = 0;
             for (int y = 0; y < TilesHigh; y++)
             for (int x = 0; x < TilesWide; x++)
             {
-                sourceRectangles[tile] = new Rectangle(
+                _sourceRectangles[tile] = new Rectangle(
                     x * TileWidth,
                     y * TileHeight,
                     TileWidth,
@@ -77,9 +56,5 @@ namespace AvatarAdventure.TileEngine
                 tile++;
             }
         }
-        #endregion
-        #region Method Region
-        #endregion
     }
-
 }

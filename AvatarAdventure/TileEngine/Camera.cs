@@ -4,13 +4,10 @@ namespace AvatarAdventure.TileEngine
 {
     public class Camera
     {
-        #region Field Region
 
         Vector2 position;
         float speed;
 
-        #endregion
-        #region Property Region
 
         public Vector2 Position
         {
@@ -26,8 +23,6 @@ namespace AvatarAdventure.TileEngine
         {
             get { return Matrix.CreateTranslation(new Vector3(-Position, 0f)); }
         }
-        #endregion
-        #region Constructor Region
         public Camera()
         {
             speed = 4f;
@@ -37,7 +32,6 @@ namespace AvatarAdventure.TileEngine
             speed = 4f;
             Position = position;
         }
-        #endregion
         public void LockCamera(TileMap map, Rectangle viewport)
         {
             position.X = MathHelper.Clamp(position.X,
