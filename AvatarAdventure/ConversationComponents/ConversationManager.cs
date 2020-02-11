@@ -182,6 +182,7 @@ namespace AvatarAdventure.ConversationComponents
             conversationList = new Dictionary<string, Conversation>();
         }
 
+        // TODO:  better way of organizing/creating conversations
         public static void CreateConversations(Game gameRef)
         {
             Texture2D sceneTexture = gameRef.Content.Load<Texture2D>(@"Scenes\scenebackground");
