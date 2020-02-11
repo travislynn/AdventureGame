@@ -186,69 +186,83 @@ namespace AvatarAdventure.ConversationComponents
         {
             Texture2D sceneTexture = gameRef.Content.Load<Texture2D>(@"Scenes\scenebackground");
             SpriteFont sceneFont = gameRef.Content.Load<SpriteFont>(@"Fonts\scenefont");
+
             Conversation c = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
             c.BackgroundName = "scenebackground";
             c.FontName = "scenefont";
 
             List<SceneOption> options = new List<SceneOption>();
             SceneOption option = new SceneOption(
-            "Good bye.",
-            "",
-            new SceneAction() { Action = ActionType.End, Parameter = "none" });
+                "Good bye.",
+                "",
+                new SceneAction() { Action = ActionType.End, Parameter = "none" });
             options.Add(option);
 
             GameScene scene = new GameScene(
-            gameRef,
-            "Hello, my name is Marissa. I'm still learning about summoning avatars.",
-            options);
+                gameRef,
+                "Hello, my name is Marissa. I'm here to guide you.  Go on, get!",
+                options);
 
             c.AddScene("Hello", scene);
             ConversationList.Add("MarissaHello", c);
+
+            // A Converstaion
+            //   has scenes
+            //     has options that point to other scenes
+
+
 
             c = new Conversation("LanceHello", "Hello", sceneTexture, sceneFont);
             c.BackgroundName = "scenebackground";
             c.FontName = "scenefont";
             options = new List<SceneOption>();
 
+            //  *******************************  one scene with text options
             option = new SceneOption(
-            "Yes",
-            "ILikeFire",
-            new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
+                "Yes",
+                "ILikeFire",  // target scene to trigger with action
+                new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
             options.Add(option);
 
             option = new SceneOption(
-            "No",
-            "IDislikeFire",
-            new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
+                "No fire sucks ass",
+                "IDislikeFire",  // target scene to trigger with action
+                new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
             options.Add(option);
+
             scene = new GameScene(
-            gameRef,
-            "Fire avatars are my favorites. Do you like fire type avatars too?",
-            options);
+                gameRef,
+                "Fire avatars are my favorites. Do you like fire type avatars too?",
+                options);
             c.AddScene("Hello", scene);
+            /******************************************************************/
 
             options = new List<SceneOption>();
- option = new SceneOption(
- "Good bye.",
-"",
-new SceneAction() { Action = ActionType.End, Parameter = "none" });
+            option = new SceneOption(
+                "Good bye.",
+                "",
+                new SceneAction() { Action = ActionType.End, Parameter = "none" });
             options.Add(option);
+
             scene = new GameScene(
-            gameRef,
-            "That's cool. I wouldn't want to hug one though.",
-            options);
+                gameRef,
+                "That's cool. I wouldn't want to hug one though.",
+                options);
             c.AddScene("ILikeFire", scene);
+
             options = new List<SceneOption>();
- option = new SceneOption(
- "Good bye.",
-"",
-new SceneAction() { Action = ActionType.End, Parameter = "none" });
+                option = new SceneOption(
+                "Good bye.",
+                "",
+                new SceneAction() { Action = ActionType.End, Parameter = "none" });
             options.Add(option);
+
             scene = new GameScene(
-            gameRef,
-            "Each to their own I guess.",
-            options);
+                gameRef,
+                "Each to their own I guess.",
+                options);
             c.AddScene("IDislikeFire", scene);
+
             conversationList.Add("LanceHello", c);
         }
     }
