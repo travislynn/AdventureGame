@@ -197,9 +197,10 @@ namespace AvatarAdventure.ConversationComponents
             new SceneAction() { Action = ActionType.End, Parameter = "none" });
             options.Add(option);
 
+            //   "Hello, my name is Marissa. I'm still learning about summoning avatars."
             GameScene scene = new GameScene(
             gameRef,
-            "Hello, my name is Marissa. I'm still learning about summoning avatars.",
+            "Hello, my name is Marissa. I'm here to help you through your journey.",
             options);
 
             c.AddScene("Hello", scene);
@@ -250,6 +251,7 @@ new SceneAction() { Action = ActionType.End, Parameter = "none" });
             options);
             c.AddScene("IDislikeFire", scene);
             conversationList.Add("LanceHello", c);
-        }
+        }
+
     }
 }
