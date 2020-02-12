@@ -186,70 +186,126 @@ namespace AvatarAdventure.ConversationComponents
         {
             Texture2D sceneTexture = gameRef.Content.Load<Texture2D>(@"Scenes\scenebackground");
             SpriteFont sceneFont = gameRef.Content.Load<SpriteFont>(@"Fonts\scenefont");
-            Conversation c = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
-            c.BackgroundName = "scenebackground";
-            c.FontName = "scenefont";
 
-            List<SceneOption> options = new List<SceneOption>();
-            SceneOption option = new SceneOption(
-            "Good bye.",
-            "",
-            new SceneAction() { Action = ActionType.End, Parameter = "none" });
-            options.Add(option);
+            // 'MarissaHello' conversation
+            Conversation marissaConversation = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
+            marissaConversation.BackgroundName = "scenebackground";
+            marissaConversation.FontName = "scenefont";
 
-            GameScene scene = new GameScene(
-            gameRef,
-            "Hello, my name is Marissa. I'm still learning about summoning avatars.",
-            options);
+            //List<SceneOption> options = new List<SceneOption>();
+            //SceneOption option = new SceneOption(
+            //"Good bye.",
+            //"",
+            //new SceneAction() { Action = ActionType.End, Parameter = "none" });
+            //options.Add(option);
 
-            c.AddScene("Hello", scene);
-            ConversationList.Add("MarissaHello", c);
+            //GameScene scene = new GameScene(
+            //gameRef,
+            //"Hello, my name is Marissa. I'm still learning about summoning avatars.",
+            //options);
 
-            c = new Conversation("LanceHello", "Hello", sceneTexture, sceneFont);
-            c.BackgroundName = "scenebackground";
-            c.FontName = "scenefont";
-            options = new List<SceneOption>();
+            marissaConversation.AddScene("Hello", new GameScene(
+                gameRef,
+                "Hello, my name is Marissa. I'm still learning about summoning avatars.",
+                new List<SceneOption>() {
+                    new SceneOption("Good bye.", "",
+                        new SceneAction(ActionType.End, "none"))
+                }));
 
-            option = new SceneOption(
-            "Yes",
-            "ILikeFire",
-            new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
-            options.Add(option);
 
-            option = new SceneOption(
-            "No",
-            "IDislikeFire",
-            new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
-            options.Add(option);
-            scene = new GameScene(
-            gameRef,
-            "Fire avatars are my favorites. Do you like fire type avatars too?",
-            options);
-            c.AddScene("Hello", scene);
+            ConversationList.Add("MarissaHello", marissaConversation);
 
-            options = new List<SceneOption>();
- option = new SceneOption(
- "Good bye.",
-"",
-new SceneAction() { Action = ActionType.End, Parameter = "none" });
-            options.Add(option);
-            scene = new GameScene(
-            gameRef,
-            "That's cool. I wouldn't want to hug one though.",
-            options);
-            c.AddScene("ILikeFire", scene);
-            options = new List<SceneOption>();
- option = new SceneOption(
- "Good bye.",
-"",
-new SceneAction() { Action = ActionType.End, Parameter = "none" });
-            options.Add(option);
-            scene = new GameScene(
-            gameRef,
-            "Each to their own I guess.",
-            options);
-            c.AddScene("IDislikeFire", scene);
-            conversationList.Add("LanceHello", c);
-        }
+            // 'LanceHello' Conversation --------------------------------
+
+            Conversation lanceConversation = new Conversation("LanceHello", "Hello", sceneTexture, sceneFont);
+            lanceConversation.BackgroundName = "scenebackground";
+            lanceConversation.FontName = "scenefont";
+
+            //  ------------Hello Scene for Lance ----------------------//
+            //options = new List<SceneOption>();
+            //option = new SceneOption(
+            //    "Yes",
+            //    "ILikeFire",
+            //    new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
+            //options.Add(option);
+
+            //option = new SceneOption(
+            //    "No",
+            //    "IDislikeFire",
+            //    new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
+            //options.Add(option);
+
+
+            //scene = new GameScene(
+            //    gameRef,
+            //    "Fire avatars are my favorites. Do you like fire type avatars too?",
+            //    new List<SceneOption> {
+            //        new SceneOption("No", "IDislikeFire",
+            //            new SceneAction(ActionType.Talk, "none")),
+            //        new SceneOption("Yes", "ILikeFire", 
+            //            new SceneAction(ActionType.Talk, "none"))
+            //    });
+
+
+            // scene 1 'hello' for lance
+            lanceConversation.AddScene("Hello", new GameScene(
+                gameRef,
+                "Fire avatars are my favorites. Do you like fire type avatars too?",
+                new List<SceneOption> {
+                    new SceneOption("No", "IDislikeFire",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("Yes", "ILikeFire",
+                        new SceneAction(ActionType.Talk, "none"))
+                }));
+
+
+            //options = new List<SceneOption>();
+            //option = new SceneOption(
+            //    "Good bye.",
+            //    "",
+            //    new SceneAction() { Action = ActionType.End, Parameter = "none" });
+            //options.Add(option);
+
+            //scene = new GameScene(
+            //    gameRef,
+            //    "That's cool. I have one if you want to see!",
+            //    options);
+
+            // 'ILikeFire' scene - ends
+            lanceConversation.AddScene("ILikeFire", new GameScene(
+                gameRef,
+                "That's cool. I have one if you want to see!",
+                new List<SceneOption>() {
+                    new SceneOption("Good bye.", "",
+                        new SceneAction(ActionType.End, "none"))
+                }));
+
+
+            //options = new List<SceneOption>();
+            //option = new SceneOption(
+            //"Good bye.",
+            //"",
+            //new SceneAction() { Action = ActionType.End, Parameter = "none" });
+            //options.Add(option);
+            //scene = new GameScene(
+            //gameRef,
+            //"Each to their own I guess.",
+            //options);
+
+
+            // 'IDislikeFire' scene - ends
+            lanceConversation.AddScene("IDislikeFire", new GameScene(
+                gameRef,
+                "Each to their own I guess.",
+                new List<SceneOption>() {
+                    new SceneOption("Good bye.", "",
+                    new SceneAction(ActionType.End, "none"))
+                }));
+
+
+
+            ConversationList.Add("LanceHello", lanceConversation);
+        }
+
     }
 }
