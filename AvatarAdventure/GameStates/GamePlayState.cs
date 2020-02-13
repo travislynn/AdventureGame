@@ -14,24 +14,16 @@ namespace AvatarAdventure.GameStates
 {
     public class GamePlayState : BaseGameState, IGamePlayState
     {
-        //Engine engine = new Engine(Game1.ScreenRectangle, 64, 64);
-        //TileMap map;
-        //Camera camera;
-        //Player player;
-
-
         Engine engine = new Engine(Game1.ScreenRectangle, 64, 64);
         World world;
         Camera camera;
         Player player;
 
-
-
-        public GamePlayState(Game game)
-        : base(game)
+        public GamePlayState(Game game) : base(game)
         {
             game.Services.AddService(typeof(IGamePlayState), this);
         }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -89,51 +81,64 @@ namespace AvatarAdventure.GameStates
             {
                 motion.Normalize();
                 motion *= (player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
-                Rectangle pRect = new Rectangle(
-                (int)player.Sprite.Position.X + (int)motion.X + cp,
-                (int)player.Sprite.Position.Y + (int)motion.Y + cp,
-                Engine.TileWidth - cp,
-                Engine.TileHeight - cp);
-                foreach (string s in world.CurrentMap.Characters.Keys)
-                {
-                    ICharacter c = GameRef.CharacterManager.GetCharacter(s);
-                    Rectangle r = new Rectangle(
-                    (int)world.CurrentMap.Characters[s].X * Engine.TileWidth + cp,
-                    (int)world.CurrentMap.Characters[s].Y * Engine.TileHeight + cp,
+
+                Rectangle playerRect = new Rectangle(
+                    (int)player.Sprite.Position.X + (int)motion.X + cp,
+                    (int)player.Sprite.Position.Y + (int)motion.Y + cp,
                     Engine.TileWidth - cp,
                     Engine.TileHeight - cp);
-                    if (pRect.Intersects(r))
+
+                foreach (string characterName in world.CurrentMap.Characters.Keys)
+                {
+                    ICharacter character = GameRef.CharacterManager.GetCharacter(characterName);
+
+                    Rectangle characterRect = new Rectangle(
+                        (int)world.CurrentMap.Characters[characterName].X * Engine.TileWidth + cp,
+                        (int)world.CurrentMap.Characters[characterName].Y * Engine.TileHeight + cp,
+                        Engine.TileWidth - cp,
+                        Engine.TileHeight - cp);
+
+                    // if player collides with character, stop their movement
+                    if (playerRect.Intersects(characterRect))
                     {
                         motion = Vector2.Zero;
                         break;
                     }
                 }
+
                 Vector2 newPosition = player.Sprite.Position + motion;
                 player.Sprite.Position = newPosition;
                 player.Sprite.IsAnimating = true;
-                player.Sprite.LockToMap(new Point(world.CurrentMap.WidthInPixels,
-               world.CurrentMap.HeightInPixels));
+                player.Sprite.LockToMap(new Point(world.CurrentMap.WidthInPixels, world.CurrentMap.HeightInPixels));
             }
             else
             {
                 player.Sprite.IsAnimating = false;
             }
+
             camera.LockToSprite(world.CurrentMap, player.Sprite, Game1.ScreenRectangle);
             player.Sprite.Update(gameTime);
+
             if (Xin.CheckKeyReleased(Keys.Space) || Xin.CheckKeyReleased(Keys.Enter))
             {
-                foreach (string s in world.CurrentMap.Characters.Keys)
+                foreach (string characterName in world.CurrentMap.Characters.Keys)
                 {
-                    ICharacter c = CharacterManager.Instance.GetCharacter(s);
-                    float distance = Vector2.Distance(player.Sprite.Center, c.Sprite.Center);
+                    ICharacter character = CharacterManager.Instance.GetCharacter(characterName);
+
+                    float distance = Vector2.Distance(player.Sprite.Center, character.Sprite.Center);
+
+                    // if player is close to character
                     if (Math.Abs(distance) < 72f)
                     {
-                        IConversationState conversationState =
-                       (IConversationState)GameRef.Services.GetService(typeof(IConversationState));
+
+                        // get the main game conversation state controller.   one per game
+                        IConversationState conversationState = (IConversationState)GameRef.Services.GetService(typeof(IConversationState));
+
                         manager.PushState(
-                        (ConversationState)conversationState,
-                        PlayerIndexInControl);
-                        conversationState.SetConversation(player, c);
+                            (ConversationState)conversationState,
+                            PlayerIndexInControl);
+
+                        conversationState.SetConversation(player, character);
                         conversationState.StartConversation();
                     }
                 }
@@ -147,11 +152,10 @@ namespace AvatarAdventure.GameStates
                     r.Y * Engine.TileHeight + Engine.TileHeight / 2));
                     if (Math.Abs(distance) < 64f)
                     {
-                        world.ChangeMap(p.DestinationLevel, new Rectangle(p.DestinationTile.X,
-                       p.DestinationTile.Y, 32, 32));
+                        world.ChangeMap(p.DestinationLevel, new Rectangle(p.DestinationTile.X, p.DestinationTile.Y, 32, 32));
                         player.Position = new Vector2(
-                        p.DestinationTile.X * Engine.TileWidth,
-                        p.DestinationTile.Y * Engine.TileHeight);
+                            p.DestinationTile.X * Engine.TileWidth,
+                            p.DestinationTile.Y * Engine.TileHeight);
                         camera.LockToSprite(world.CurrentMap, player.Sprite, Game1.ScreenRectangle);
                         return;
                     }
@@ -174,6 +178,7 @@ namespace AvatarAdventure.GameStates
                 }
             }
 
+            // TODO:  Save game data as json.  Create GameSave class that has all necessary objects and serialize it.
             // F1 = Save Game
             // Produces:
             // avatar.sav
@@ -218,9 +223,13 @@ namespace AvatarAdventure.GameStates
             Texture2D spriteSheet = content.Load<Texture2D>(@"PlayerSprites\maleplayer");
             TileMap map = null;
             world = new World();
+
+            // player initialize
+            // TODO:  Let player enter their own name
             player = new Player(GameRef, "Wesley", false, spriteSheet);
             player.AddAvatar("fire", AvatarManager.GetAvatar("fire"));
             player.SetAvatar("fire");
+
             Texture2D tiles = GameRef.Content.Load<Texture2D>(@"Tiles\tileset1");
             TileSet set = new TileSet(8, 8, 32, 32);
             set.Texture = tiles;
@@ -228,12 +237,17 @@ namespace AvatarAdventure.GameStates
             TileLayer edge = new TileLayer(200, 200);
             TileLayer building = new TileLayer(200, 200);
             TileLayer decor = new TileLayer(200, 200);
+
+            // configure map 1
             map = new TileMap(set, background, edge, building, decor, "test-map");
             map.FillEdges();
             map.FillBuilding();
             map.FillDecoration();
             building.SetTile(4, 4, 18);
+
             ConversationManager.CreateConversations(GameRef);
+
+            // TODO:  Build characters from data file
             ICharacter teacherOne = Character.FromString(GameRef,
                 "Lance,teacherone,WalkDown,teacherone,water");
             ICharacter teacherTwo = PCharacter.FromString(GameRef,
@@ -241,15 +255,21 @@ namespace AvatarAdventure.GameStates
 
             teacherOne.SetConversation("LanceHello");
             teacherTwo.SetConversation("MarissaHello");
+
             GameRef.CharacterManager.AddCharacter("teacherone", teacherOne);
             GameRef.CharacterManager.AddCharacter("teachertwo", teacherTwo);
+
             map.Characters.Add("teacherone", new Point(0, 4));
             map.Characters.Add("teachertwo", new Point(4, 0));
+
             map.PortalLayer.Portals.Add(Rectangle.Empty, new Portal(Point.Zero, Point.Zero, "level1"));
             map.PortalLayer.Portals.Add(new Rectangle(4, 4, 32, 32), new Portal(new Point(4, 4), new
                 Point(10, 10), "inside"));
+
             world.AddMap("level1", map);
             world.ChangeMap("level1", Rectangle.Empty);
+
+            // configure map 2 
             background = new TileLayer(20, 20, 23);
             edge = new TileLayer(20, 20);
             building = new TileLayer(20, 20);
@@ -262,6 +282,7 @@ namespace AvatarAdventure.GameStates
             map.PortalLayer.Portals.Add(new Rectangle(9, 19, 32, 32), new Portal(new Point(9, 19), new
                 Point(4, 4), "level1"));
             world.AddMap("inside", map);
+
             camera = new Camera();
         }
 

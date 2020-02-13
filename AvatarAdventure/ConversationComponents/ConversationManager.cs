@@ -89,6 +89,7 @@ namespace AvatarAdventure.ConversationComponents
             XmlWriter writer = XmlWriter.Create(stream, settings);
             xmlDoc.Save(writer);
         }
+
         public static void FromFile(string fileName, Game gameRef, bool editor = false)
         {
             XmlDocument xmlDoc = new XmlDocument();
@@ -168,7 +169,6 @@ namespace AvatarAdventure.ConversationComponents
             }
         }
 
-
         public static void ClearConversations()
         {
             ConversationList = new Dictionary<string, Conversation>();
@@ -181,6 +181,7 @@ namespace AvatarAdventure.ConversationComponents
 
             // TODO:  Build conversations from data file
             // TODO:  Further refactors to simplify
+           
 
             // 'MarissaHello' conversation
             Conversation marissaConversation = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
