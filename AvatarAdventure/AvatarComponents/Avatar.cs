@@ -11,92 +11,49 @@ namespace AvatarAdventure.AvatarComponents
 {
     public class Avatar
     {
-        #region Field Region
-        private static Random random = new Random();
-        private Texture2D texture;
-        private string name;
-        private AvatarElement element;
-        private int level;
-        private long experience;
-        private int costToBuy;
-        private int speed;
-        private int attack;
-        private int defense;
-        private int health;
-        private int currentHealth;
-        private List<IMove> effects;
-        private Dictionary<string, IMove> knownMoves;
+        private int _level;
+        private int _costToBuy;
 
-        #endregion
+        public string Name { get; private set; }
 
-        #region Property Region
-        public string Name
-        {
-            get { return name; }
-        }
         public int Level
         {
-            get { return level; }
-            set { level = (int)MathHelper.Clamp(value, 1, 100); }
+            get { return _level; }
+            set { _level = (int)MathHelper.Clamp(value, 1, 100); }
         }
-        public long Experience
-        {
-            get { return experience; }
-        }
-        public Texture2D Texture
-        {
-            get { return texture; }
-        }
-        public Dictionary<string, IMove> KnownMoves
-        {
-            get { return knownMoves; }
-        }
-        public AvatarElement Element
-        {
-            get { return element; }
-        }
-        public List<IMove> Effects
-        {
-            get { return effects; }
-        }
-        public static Random Random
-        {
-            get { return random; }
-        }
-        public int BaseAttack
-        {
-            get { return attack; }
-        }
-        public int BaseDefense
-        {
-            get { return defense; }
-        }
-        public int BaseSpeed
-        {
-            get { return speed; }
-        }
-        public int BaseHealth
-        {
-            get { return health; }
-        }
-        public int CurrentHealth
-        {
-            get { return currentHealth; }
-        }
+        public long Experience { get; private set; }
+
+        public Texture2D Texture { get; private set; }
+
+        public Dictionary<string, IMove> KnownMoves { get; private set; }
+
+        public AvatarElement Element { get; private set; }
+
+        public List<IMove> Effects { get; }
+
+        public static Random Random { get; } = new Random();
+
+        public int BaseAttack { get; private set; }
+
+        public int BaseDefense { get; private set; }
+
+        public int BaseSpeed { get; private set; }
+
+        public int BaseHealth { get; private set; }
+
+        public int CurrentHealth { get; private set; }
+
         public bool Alive
         {
-            get { return (currentHealth > 0); }
+            get { return (CurrentHealth > 0); }
         }
-        #endregion
 
-        #region Constructor Region
         private Avatar()
         {
-            level = 1;
-            knownMoves = new Dictionary<string, IMove>();
-            effects = new List<IMove>();
+            _level = 1;
+            KnownMoves = new Dictionary<string, IMove>();
+            Effects = new List<IMove>();
         }
-        #endregion
 
         public void ResoleveMove(IMove move, Avatar target)
         {
@@ -107,22 +64,22 @@ namespace AvatarAdventure.AvatarComponents
                     if (move.MoveType == MoveType.Buff)
                     {
                         found = false;
-                        for (int i = 0; i < effects.Count; i++)
+                        for (int i = 0; i < Effects.Count; i++)
                         {
-                            if (effects[i].Name == move.Name)
+                            if (Effects[i].Name == move.Name)
                             {
-                                effects[i].Duration += move.Duration;
+                                Effects[i].Duration += move.Duration;
                                 found = true;
                             }
                         }
                         if (!found)
-                            effects.Add((IMove)move.Clone());
+                            Effects.Add((IMove)move.Clone());
                     }
                     else if (move.MoveType == MoveType.Heal)
                     {
-                        currentHealth += move.Health;
-                        if (currentHealth > health)
-                            currentHealth = health;
+                        CurrentHealth += move.Health;
+                        if (CurrentHealth > BaseHealth)
+                            CurrentHealth = BaseHealth;
                     }
                     else if (move.MoveType == MoveType.Status)
                     {
@@ -203,16 +160,16 @@ namespace AvatarAdventure.AvatarComponents
 
         public void ApplyDamage(int tDamage)
         {
-            currentHealth -= tDamage;
+            CurrentHealth -= tDamage;
         }
         public void Update(GameTime gameTime)
         {
-            for (int i = 0; i < effects.Count; i++)
+            for (int i = 0; i < Effects.Count; i++)
             {
-                effects[i].Duration--;
-                if (effects[i].Duration < 1)
+                Effects[i].Duration--;
+                if (Effects[i].Duration < 1)
                 {
-                    effects.RemoveAt(i);
+                    Effects.RemoveAt(i);
                     i--;
                 }
             }
@@ -221,60 +178,60 @@ namespace AvatarAdventure.AvatarComponents
         public int GetAttack()
         {
             int attackMod = 0;
-            foreach (IMove move in effects)
+            foreach (IMove move in Effects)
             {
                 if (move.MoveType == MoveType.Buff)
                     attackMod += move.Attack;
                 if (move.MoveType == MoveType.Debuff)
                     attackMod -= move.Attack;
             }
-            return attack + attackMod;
+            return BaseAttack + attackMod;
         }
         public int GetDefense()
         {
             int defenseMod = 0;
-            foreach (IMove move in effects)
+            foreach (IMove move in Effects)
             {
                 if (move.MoveType == MoveType.Buff)
                     defenseMod += move.Defense;
                 if (move.MoveType == MoveType.Debuff)
                     defenseMod -= move.Defense;
             }
-            return defense + defenseMod;
+            return BaseDefense + defenseMod;
         }
         public int GetSpeed()
         {
             int speedMod = 0;
-            foreach (IMove move in effects)
+            foreach (IMove move in Effects)
             {
                 if (move.MoveType == MoveType.Buff)
                     speedMod += move.Speed;
                 if (move.MoveType == MoveType.Debuff)
                     speedMod -= move.Speed;
             }
-            return speed + speedMod;
+            return BaseSpeed + speedMod;
         }
         public int GetHealth()
         {
             int healthMod = 0;
-            foreach (IMove move in effects)
+            foreach (IMove move in Effects)
             {
                 if (move.MoveType == MoveType.Buff)
                     healthMod += move.Health;
                 if (move.MoveType == MoveType.Debuff)
                     healthMod += move.Health;
             }
-            return health + healthMod;
+            return BaseHealth + healthMod;
         }
 
         public void StartCombat()
         {
-            effects.Clear();
-            currentHealth = health;
+            Effects.Clear();
+            CurrentHealth = BaseHealth;
         }
         public long WinBattle(Avatar target)
         {
-            int levelDiff = target.Level - level;
+            int levelDiff = target.Level - _level;
             long expGained = 0;
             if (levelDiff <= -10)
             {
@@ -310,10 +267,10 @@ namespace AvatarAdventure.AvatarComponents
         public bool CheckLevelUp()
         {
             bool leveled = false;
-            if (experience >= 50 * (1 + (long)Math.Pow((level - 1), 2.5)))
+            if (Experience >= 50 * (1 + (long)Math.Pow((_level - 1), 2.5)))
             {
                 leveled = true;
-                level++;
+                _level++;
             }
             return leveled;
         }
@@ -324,16 +281,16 @@ namespace AvatarAdventure.AvatarComponents
             switch (s)
             {
                 case "Attack":
-                    attack += p;
+                    BaseAttack += p;
                     break;
                 case "Defense":
-                    defense += p;
+                    BaseDefense += p;
                     break;
                 case "Speed":
-                    speed += p;
+                    BaseSpeed += p;
                     break;
                 case "Health":
-                    health += p;
+                    BaseHealth += p;
                     break;
             }
         }
@@ -343,17 +300,17 @@ namespace AvatarAdventure.AvatarComponents
         {
             Avatar avatar = new Avatar();
             string[] parts = description.Split(',');
-            avatar.name = parts[0];
-            avatar.texture = content.Load<Texture2D>(@"AvatarImages\" + parts[0]);
-            avatar.element = (AvatarElement)Enum.Parse(typeof(AvatarElement), parts[1]);
-            avatar.costToBuy = int.Parse(parts[2]);
-            avatar.level = int.Parse(parts[3]);
-            avatar.attack = int.Parse(parts[4]);
-            avatar.defense = int.Parse(parts[5]);
-            avatar.speed = int.Parse(parts[6]);
-            avatar.health = int.Parse(parts[7]);
-            avatar.currentHealth = avatar.health;
-            avatar.knownMoves = new Dictionary<string, IMove>();
+            avatar.Name = parts[0];
+            avatar.Texture = content.Load<Texture2D>(@"AvatarImages\" + parts[0]);
+            avatar.Element = (AvatarElement)Enum.Parse(typeof(AvatarElement), parts[1]);
+            avatar._costToBuy = int.Parse(parts[2]);
+            avatar._level = int.Parse(parts[3]);
+            avatar.BaseAttack = int.Parse(parts[4]);
+            avatar.BaseDefense = int.Parse(parts[5]);
+            avatar.BaseSpeed = int.Parse(parts[6]);
+            avatar.BaseHealth = int.Parse(parts[7]);
+            avatar.CurrentHealth = avatar.BaseHealth;
+            avatar.KnownMoves = new Dictionary<string, IMove>();
             for (int i = 8; i < parts.Length; i++)
             {
                 string[] moveParts = parts[i].Split(':');
@@ -363,7 +320,7 @@ namespace AvatarAdventure.AvatarComponents
                     move.UnlockedAt = int.Parse(moveParts[1]);
                     if (move.UnlockedAt <= avatar.Level)
                         move.Unlock();
-                    avatar.knownMoves.Add(move.Name, move);
+                    avatar.KnownMoves.Add(move.Name, move);
                 }
             }
             return avatar;
@@ -372,20 +329,20 @@ namespace AvatarAdventure.AvatarComponents
         public object Clone()
         {
             Avatar avatar = new Avatar();
-            avatar.name = this.name;
-            avatar.texture = this.texture;
-            avatar.element = this.element;
-            avatar.costToBuy = this.costToBuy;
-            avatar.level = this.level;
-            avatar.experience = this.experience;
-            avatar.attack = this.attack;
-            avatar.defense = this.defense;
-            avatar.speed = this.speed;
-            avatar.health = this.health;
-            avatar.currentHealth = this.health;
-            foreach (string s in this.knownMoves.Keys)
+            avatar.Name = this.Name;
+            avatar.Texture = this.Texture;
+            avatar.Element = this.Element;
+            avatar._costToBuy = this._costToBuy;
+            avatar._level = this._level;
+            avatar.Experience = this.Experience;
+            avatar.BaseAttack = this.BaseAttack;
+            avatar.BaseDefense = this.BaseDefense;
+            avatar.BaseSpeed = this.BaseSpeed;
+            avatar.BaseHealth = this.BaseHealth;
+            avatar.CurrentHealth = this.BaseHealth;
+            foreach (string s in this.KnownMoves.Keys)
             {
-                avatar.knownMoves.Add(s, this.knownMoves[s]);
+                avatar.KnownMoves.Add(s, this.KnownMoves[s]);
             }
             return avatar;
         }
@@ -393,26 +350,26 @@ namespace AvatarAdventure.AvatarComponents
         public bool Save(BinaryWriter writer)
         {
             StringBuilder b = new StringBuilder();
-            b.Append(name);
+            b.Append(Name);
             b.Append(",");
-            b.Append(element);
+            b.Append(Element);
             b.Append(",");
-            b.Append(experience);
+            b.Append(Experience);
             b.Append(",");
-            b.Append(costToBuy);
+            b.Append(_costToBuy);
             b.Append(",");
-            b.Append(level);
+            b.Append(_level);
             b.Append(",");
-            b.Append(attack);
+            b.Append(BaseAttack);
             b.Append(",");
-            b.Append(defense);
+            b.Append(BaseDefense);
             b.Append(",");
-            b.Append(speed);
+            b.Append(BaseSpeed);
             b.Append(",");
-            b.Append(health);
+            b.Append(BaseHealth);
             b.Append(",");
-            b.Append(currentHealth);
-            foreach (string s in knownMoves.Keys)
+            b.Append(CurrentHealth);
+            foreach (string s in KnownMoves.Keys)
             {
                 b.Append(",");
                 b.Append(s);

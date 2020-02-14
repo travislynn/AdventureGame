@@ -5,62 +5,56 @@ namespace AvatarAdventure.Components
 {
     public class Xin : GameComponent
     {
-        private static KeyboardState currentKeyboardState = Keyboard.GetState();
-        private static KeyboardState previousKeyboardState = Keyboard.GetState();
-        private static MouseState currentMouseState = Mouse.GetState();
-        private static MouseState previousMouseState = Mouse.GetState();
+        private static KeyboardState _currentKeyboardState = Keyboard.GetState();
+        private static KeyboardState _previousKeyboardState = Keyboard.GetState();
 
-        public static MouseState MouseState
-        {
-            get { return currentMouseState; }
-        }
+        public static MouseState MouseState { get; private set; } = Mouse.GetState();
+
         public static KeyboardState KeyboardState
         {
-            get { return currentKeyboardState; }
+            get { return _currentKeyboardState; }
         }
         public static KeyboardState PreviousKeyboardState
         {
-            get { return previousKeyboardState; }
+            get { return _previousKeyboardState; }
         }
-        public static MouseState PreviousMouseState
-        {
-            get { return previousMouseState; }
-        }
-        public Xin(Game game)
-            : base(game)
+        public static MouseState PreviousMouseState { get; private set; } = Mouse.GetState();
+
+        public Xin(Game game) : base(game)
         {
         }
+
         public override void Update(GameTime gameTime)
         {
-            Xin.previousKeyboardState = Xin.currentKeyboardState;
-            Xin.currentKeyboardState = Keyboard.GetState();
-            Xin.previousMouseState = Xin.currentMouseState;
-            Xin.currentMouseState = Mouse.GetState();
+            Xin._previousKeyboardState = Xin._currentKeyboardState;
+            Xin._currentKeyboardState = Keyboard.GetState();
+            Xin.PreviousMouseState = Xin.MouseState;
+            Xin.MouseState = Mouse.GetState();
             base.Update(gameTime);
         }
         public static void FlushInput()
         {
-            currentMouseState = previousMouseState;
-            currentKeyboardState = previousKeyboardState;
+            MouseState = PreviousMouseState;
+            _currentKeyboardState = _previousKeyboardState;
         }
         public static bool CheckKeyReleased(Keys key)
         {
-            return currentKeyboardState.IsKeyUp(key) &&
-                   previousKeyboardState.IsKeyDown(key);
+            return _currentKeyboardState.IsKeyUp(key) &&
+                   _previousKeyboardState.IsKeyDown(key);
         }
         public static bool CheckMouseReleased(MouseButtons button)
         {
             switch (button)
             {
                 case MouseButtons.Left:
-                    return (currentMouseState.LeftButton == ButtonState.Released) &&
-                           (previousMouseState.LeftButton == ButtonState.Pressed);
+                    return (MouseState.LeftButton == ButtonState.Released) &&
+                           (PreviousMouseState.LeftButton == ButtonState.Pressed);
                 case MouseButtons.Right:
-                    return (currentMouseState.RightButton == ButtonState.Released) &&
-                           (previousMouseState.RightButton == ButtonState.Pressed);
+                    return (MouseState.RightButton == ButtonState.Released) &&
+                           (PreviousMouseState.RightButton == ButtonState.Pressed);
                 case MouseButtons.Center:
-                    return (currentMouseState.MiddleButton == ButtonState.Released) &&
-                           (previousMouseState.MiddleButton == ButtonState.Pressed);
+                    return (MouseState.MiddleButton == ButtonState.Released) &&
+                           (PreviousMouseState.MiddleButton == ButtonState.Pressed);
             }
             return false;
         }

@@ -6,19 +6,10 @@ namespace AvatarAdventure.AvatarComponents
 {
     public static class MoveManager
     {
-        #region Field Region
-        private static Dictionary<string, IMove> allMoves = new Dictionary<string, IMove>();
-        private static Random random = new Random();
-        #endregion
-        #region Property Region
-        public static Random Random
-        {
-            get { return random; }
-        }
-        #endregion
-        #region Constructor Region
-        #endregion
-        #region Method Region
+        private static readonly Dictionary<string, IMove> _allMoves = new Dictionary<string, IMove>();
+
+        public static Random Random { get; } = new Random();
+
         public static void FillMoves()
         {
             // TODO:  Abstract moves to a string, load from csv/source like avatars
@@ -38,15 +29,15 @@ namespace AvatarAdventure.AvatarComponents
         }
         public static IMove GetMove(string name)
         {
-            if (allMoves.ContainsKey(name))
-                return (IMove)allMoves[name].Clone();
+            if (_allMoves.ContainsKey(name))
+                return (IMove)_allMoves[name].Clone();
+
             return null;
         }
         public static void AddMove(IMove move)
         {
-            if (!allMoves.ContainsKey(move.Name))
-                allMoves.Add(move.Name, move);
+            if (!_allMoves.ContainsKey(move.Name))
+                _allMoves.Add(move.Name, move);
         }
-        #endregion
     }
 }
