@@ -89,6 +89,8 @@ namespace AvatarAdventure.ConversationComponents
             XmlWriter writer = XmlWriter.Create(stream, settings);
             xmlDoc.Save(writer);
         }
+
+        // TODO:  Move to JSON
         public static void FromFile(string fileName, Game gameRef, bool editor = false)
         {
             XmlDocument xmlDoc = new XmlDocument();
@@ -100,24 +102,24 @@ namespace AvatarAdventure.ConversationComponents
                     root = root.NextSibling;
                 if (root.Name != "Conversations")
                     throw new Exception("Invalid conversation file!");
+
                 foreach (XmlNode node in root.ChildNodes)
                 {
                     if (node.Name == "#comment")
                         continue;
                     if (node.Name != "Conversation")
                         throw new Exception("Invalid conversation file!");
+
                     string conversationName = node.Attributes["Name"].Value;
                     string firstScene = node.Attributes["FirstScene"].Value;
                     string backgroundName = node.Attributes["BackgroundName"].Value;
                     string fontName = node.Attributes["FontName"].Value;
-                    Texture2D background = gameRef.Content.Load<Texture2D>(@"Backgrounds\" +
-                   backgroundName);
-                    SpriteFont font = gameRef.Content.Load<SpriteFont>(@"Fonts\" +
-                   fontName);
-                    Conversation conversation = new Conversation(conversationName,
-                   firstScene, background, font);
+                    Texture2D background = gameRef.Content.Load<Texture2D>(@"Backgrounds\" + backgroundName);
+                    SpriteFont font = gameRef.Content.Load<SpriteFont>(@"Fonts\" + fontName);
+                    Conversation conversation = new Conversation(conversationName, firstScene, background, font);
                     conversation.BackgroundName = backgroundName;
                     conversation.FontName = fontName;
+
                     foreach (XmlNode sceneNode in node.ChildNodes)
                     {
                         string text = "";
@@ -142,10 +144,8 @@ namespace AvatarAdventure.ConversationComponents
                                 optionParam = innerNode.Attributes["Parameter"].Value;
                                 SceneAction action = new SceneAction();
                                 action.Parameter = optionParam;
-                                action.Action = (ActionType)Enum.Parse(typeof(ActionType),
-                               optionAction);
-                                SceneOption option = new SceneOption(optionText,
-                               optionScene, action);
+                                action.Action = (ActionType)Enum.Parse(typeof(ActionType), optionAction);
+                                SceneOption option = new SceneOption(optionText, optionScene, action);
                                 sceneOptions.Add(option);
                             }
                         }
@@ -176,11 +176,7 @@ namespace AvatarAdventure.ConversationComponents
 
         public static void CreateConversations(Game gameRef)
         {
-            Texture2D sceneTexture = gameRef.Content.Load<Texture2D>(@"Scenes\scenebackground");
-            SpriteFont sceneFont = gameRef.Content.Load<SpriteFont>(@"Fonts\scenefont");
-
             // TODO:  Build conversations from data file
-            // TODO:  Further refactors to simplify
             // TODO:  Convos to give items
             // TODO:  Convos to buy/sell
             // TODO:  Puzzles in convos
@@ -188,82 +184,9 @@ namespace AvatarAdventure.ConversationComponents
 
             var convoBuilder = new ConversationBuilder(gameRef);
 
-            // 'MarissaHello' conversation
-            //Conversation marissaConversation = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
-            //marissaConversation.BackgroundName = "scenebackground";
-            //marissaConversation.FontName = "scenefont";
-
-            //marissaConversation.AddScene("Hello", new GameScene(
-            //    gameRef,
-            //    "Hello, my name is Marissa. I'm still learning about summoning avatars.",
-            //    new List<SceneOption>() {
-            //        new SceneOption("Good bye.", "",
-            //            new SceneAction(ActionType.End, "none"))
-            //    }));
-
             ConversationList.Add("MarissaHello", convoBuilder.MakeMarissaDefault());
 
-            // 'LanceHello' Conversation --------------------------------
-            Conversation lanceConversation = new Conversation("LanceHello", "Hello", sceneTexture, sceneFont);
-            lanceConversation.BackgroundName = "scenebackground";
-            lanceConversation.FontName = "scenefont";
-
-            // scene 1 'hello' for lance
-            lanceConversation.AddScene("Hello", new GameScene(
-                gameRef,
-                "Fire avatars are my favorites. Do you like fire type avatars too?",
-                new List<SceneOption> {
-                    new SceneOption("No", "IDislikeFire",
-                        new SceneAction(ActionType.Talk, "none")),
-                    new SceneOption("Yes", "ILikeFire",
-                        new SceneAction(ActionType.Talk, "none"))
-                }));
-
-            // 'ILikeFire' scene - ends
-            lanceConversation.AddScene("ILikeFire", new GameScene(
-                gameRef,
-                "That's cool. I have one if you want to see!",
-                new List<SceneOption>() {
-                    new SceneOption("Good bye.", "",
-                        new SceneAction(ActionType.End, "none"))
-                }));
-
-            // 'IDislikeFire' scene - ends
-            lanceConversation.AddScene("IDislikeFire", new GameScene(
-                gameRef,
-                "Each to their own I guess.  I don't like water at all.  Do you?",
-                new List<SceneOption>() {
-                    new SceneOption("Yeah man water is cool!", "CoolWater",
-                        new SceneAction(ActionType.Talk, "none")),
-                    new SceneOption("No water for this hombre", "NoWater",
-                        new SceneAction(ActionType.Talk, "none"))
-                }));
-
-            lanceConversation.AddScene("CoolWater", new GameScene(
-                gameRef,
-                "That's so cool that you like water.  I guess you better go play the game now.",
-                new List<SceneOption>() {
-                    new SceneOption("Ok", "",
-                        new SceneAction(ActionType.End, "none")),
-                    new SceneOption("Umm, ok", "",
-                        new SceneAction(ActionType.End, "none")),
-                    new SceneOption("Screw you Lance!", "",
-                        new SceneAction(ActionType.End, "none"))
-                }));
-
-            lanceConversation.AddScene("NoWater", new GameScene(
-                gameRef,
-                "Hmm, it seems you don't like many avatars.  You DO understand what this game is, right?",
-                new List<SceneOption>() {
-                    new SceneOption("Avatars!", "",
-                        new SceneAction(ActionType.End, "none")),
-                    new SceneOption("Characters!", "",
-                        new SceneAction(ActionType.End, "none")),
-                    new SceneOption("Sweet Maps!", "",
-                        new SceneAction(ActionType.End, "none"))
-                }));
-
-            ConversationList.Add("LanceHello", lanceConversation);
+            ConversationList.Add("LanceHello", convoBuilder.MakeLanceDefault());
         }
     }
 }

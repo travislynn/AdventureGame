@@ -6,91 +6,59 @@ namespace AvatarAdventure.ConversationComponents
 {
     public class Conversation
     {
-        #region Field Region
-        private string name;
-        private string firstScene;
-        private string currentScene;
-        private Dictionary<string, GameScene> scenes;
-        private string backgroundName;
-        private Texture2D background;
-        private string fontName;
-        private SpriteFont spriteFont;
-        #endregion
-        #region Property Region
-        public string Name
+        private string _currentScene;
+
+        public string Name { get; }
+
+        public string FirstScene { get; }
+
+        public GameScene CurrentScene => Scenes[_currentScene];
+
+        public Dictionary<string, GameScene> Scenes { get; }
+
+        public Texture2D Background { get; }
+
+        public SpriteFont SpriteFont { get; }
+
+        public string BackgroundName { get; set; }
+
+        public string FontName { get; set; }
+
+        public Conversation(string name, string firstScene, Texture2D background, SpriteFont font)
         {
-            get { return name; }
+            this.Scenes = new Dictionary<string, GameScene>();
+            this.Name = name;
+            this.FirstScene = firstScene;
+            this.Background = background;
+            this.SpriteFont = font;
         }
-        public string FirstScene
-        {
-            get { return firstScene; }
-        }
-        public GameScene CurrentScene
-        {
-            get { return scenes[currentScene]; }
-        }
-        public Dictionary<string, GameScene> Scenes
-        {
-            get { return scenes; }
-        }
-        public Texture2D Background
-        {
-            get { return background; }
-        }
-        public SpriteFont SpriteFont
-        {
-            get { return spriteFont; }
-        }
-        public string BackgroundName
-        {
-            get { return backgroundName; }
-            set { backgroundName = value; }
-        }
-        public string FontName
-        {
-            get { return fontName; }
-            set { fontName = value; }
-        }
-        #endregion
-        #region Constructor Region
-        public Conversation(string name, string firstScene, Texture2D background, SpriteFont
-       font)
-        {
-            this.scenes = new Dictionary<string, GameScene>();
-            this.name = name;
-            this.firstScene = firstScene;
-            this.background = background;
-            this.spriteFont = font;
-        }
-        #endregion
-        #region Method Region
         public void Update(GameTime gameTime)
         {
             CurrentScene.Update(gameTime, PlayerIndex.One);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            CurrentScene.Draw(gameTime, spriteBatch, background, spriteFont);
+            CurrentScene.Draw(gameTime, spriteBatch, Background, SpriteFont);
         }
         public void AddScene(string sceneName, GameScene scene)
         {
-            if (!scenes.ContainsKey(sceneName))
-                scenes.Add(sceneName, scene);
+            if (!Scenes.ContainsKey(sceneName))
+                Scenes.Add(sceneName, scene);
         }
         public GameScene GetScene(string sceneName)
         {
-            if (scenes.ContainsKey(sceneName))
-                return scenes[sceneName];
+            if (Scenes.ContainsKey(sceneName))
+                return Scenes[sceneName];
             return null;
         }
         public void StartConversation()
         {
-            currentScene = firstScene;
+            _currentScene = FirstScene;
         }
         public void ChangeScene(string sceneName)
         {
-            currentScene = sceneName;
+            _currentScene = sceneName;
         }
-        #endregion
     }
+
 }
