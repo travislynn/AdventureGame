@@ -181,21 +181,27 @@ namespace AvatarAdventure.ConversationComponents
 
             // TODO:  Build conversations from data file
             // TODO:  Further refactors to simplify
+            // TODO:  Convos to give items
+            // TODO:  Convos to buy/sell
+            // TODO:  Puzzles in convos
+            // TODO:  Tutorial/Guide NPC - Marissa
+
+            var convoBuilder = new ConversationBuilder(gameRef);
 
             // 'MarissaHello' conversation
-            Conversation marissaConversation = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
-            marissaConversation.BackgroundName = "scenebackground";
-            marissaConversation.FontName = "scenefont";
+            //Conversation marissaConversation = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
+            //marissaConversation.BackgroundName = "scenebackground";
+            //marissaConversation.FontName = "scenefont";
 
-            marissaConversation.AddScene("Hello", new GameScene(
-                gameRef,
-                "Hello, my name is Marissa. I'm still learning about summoning avatars.",
-                new List<SceneOption>() {
-                    new SceneOption("Good bye.", "",
-                        new SceneAction(ActionType.End, "none"))
-                }));
+            //marissaConversation.AddScene("Hello", new GameScene(
+            //    gameRef,
+            //    "Hello, my name is Marissa. I'm still learning about summoning avatars.",
+            //    new List<SceneOption>() {
+            //        new SceneOption("Good bye.", "",
+            //            new SceneAction(ActionType.End, "none"))
+            //    }));
 
-            ConversationList.Add("MarissaHello", marissaConversation);
+            ConversationList.Add("MarissaHello", convoBuilder.MakeMarissaDefault());
 
             // 'LanceHello' Conversation --------------------------------
             Conversation lanceConversation = new Conversation("LanceHello", "Hello", sceneTexture, sceneFont);
