@@ -6,41 +6,24 @@ namespace AvatarAdventure.StateManager
 {
     public class GameStateManager : GameComponent, IStateManager
     {
-        #region Field Region
 
         private readonly Stack<GameState> gameStates = new Stack<GameState>();
-
         private const int startDrawOrder = 5000;
         private const int drawOrderInc = 50;
         private int drawOrder;
-
-        #endregion
-
-        #region Event Handler Region
-
         public event EventHandler StateChanged;
-
-        #endregion
-
-        #region Property Region
 
         public GameState CurrentState
         {
             get { return gameStates.Peek(); }
         }
 
-        #endregion
-
-        #region Constructor Region
 
         public GameStateManager(Game game) : base(game)
         {
             Game.Services.AddService(typeof(IStateManager), this);
         }
 
-        #endregion
-
-        #region Method Region
 
         public void PushState(GameState state, PlayerIndex? index)
         {
@@ -100,6 +83,5 @@ namespace AvatarAdventure.StateManager
                 StateChanged(this, null);
         }
 
-        #endregion
     }
 }

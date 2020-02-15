@@ -248,18 +248,18 @@ namespace AvatarAdventure.GameStates
             ConversationManager.CreateConversations(GameRef);
 
             // TODO:  Build characters from data file
-            ICharacter teacherOne = Character.FromString(GameRef,
+            ICharacter lance = Character.FromString(GameRef,
                 "Lance,teacherone,WalkDown,teacherone,water");
-            ICharacter teacherTwo = PCharacter.FromString(GameRef,
+            ICharacter marissa = PCharacter.FromString(GameRef,
                 "Marissa,teachertwo,WalkDown,tearchertwo,0,wind,earth");
 
-            teacherOne.SetConversation("LanceHello");
-            teacherTwo.SetConversation("MarissaHello");
+            lance.SetConversation("LanceHello");
+            marissa.SetConversation("MarissaHello");
 
-            GameRef.CharacterManager.AddCharacter("teacherone", teacherOne);
-            GameRef.CharacterManager.AddCharacter("teachertwo", teacherTwo);
+            GameRef.CharacterManager.AddCharacter("teacherone", lance);
+            GameRef.CharacterManager.AddCharacter("teachertwo", marissa);
 
-            map.Characters.Add("teacherone", new Point(0, 4));
+            map.Characters.Add("teacherone", new Point(0, 8));
             map.Characters.Add("teachertwo", new Point(4, 0));
 
             map.PortalLayer.Portals.Add(Rectangle.Empty, new Portal(Point.Zero, Point.Zero, "level1"));
