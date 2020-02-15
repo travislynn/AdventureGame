@@ -17,7 +17,7 @@ namespace AvatarAdventure.ConversationComponents
             _sceneFont = gameRef.Content.Load<SpriteFont>(@"Fonts\scenefont");
         }
         
-        public Conversation MakeMarissaDefault()
+        public Conversation MakeMarissaOldDefault()
         {
             var marissaConversation = new Conversation("MarissaHello", "Hello", _sceneTexture, _sceneFont);
             marissaConversation.BackgroundName = "scenebackground";
@@ -96,6 +96,67 @@ namespace AvatarAdventure.ConversationComponents
                 }));
 
             return lanceConversation;
+        }
+
+        public Conversation MakeMarissaDefault()
+        {
+            Conversation convo = new Conversation("MarissaHello", "Hello", _sceneTexture, _sceneFont);
+            convo.BackgroundName = "scenebackground";
+            convo.FontName = "scenefont";
+
+            convo.AddScene("Hello", new GameScene(
+                _gameRef,
+                "Hello and welcome!  My name is Marissa.  I'm here to teach you all about this world.",
+                new List<SceneOption> {
+                    new SceneOption("What is this place?", "World",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("What can I do?", "KeyBindings",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("Tell me about Avatars!", "Avatars",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("I'm good, thanks.", "",
+                        new SceneAction(ActionType.End, "none"))
+                }));
+
+            // 'ILikeFire' scene - ends
+            convo.AddScene("World", new GameScene(
+                _gameRef,
+                "This place is really cool.  There are some people around the map like me.  Some of us have avatars and will battle against you!  There are also other maps to explore.",
+                new List<SceneOption>() {
+                    new SceneOption("What can I do?", "KeyBindings",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("Tell me about Avatars!", "Avatars",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("I'm good, thanks.", "",
+                        new SceneAction(ActionType.End, "none"))
+                }));
+
+            // 'IDislikeFire' scene - ends
+            convo.AddScene("KeyBindings", new GameScene(
+                _gameRef,
+                "AWSD to move.  Space or enter to talk to people or activate doors.  B to battle an npc's avatar.  F1 to save your game.",
+                new List<SceneOption>() {
+                    new SceneOption("What is this place?", "World",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("Tell me about Avatars!", "Avatars",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("I'm good, thanks.", "",
+                        new SceneAction(ActionType.End, "none"))
+                }));
+
+            convo.AddScene("Avatars", new GameScene(
+                _gameRef,
+                "Avatars have elemental strenghts and weaknesses.  They have moves they learn from levelling up.  You can hold a bunch.",
+                new List<SceneOption>() {
+                    new SceneOption("What is this place?", "World",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("What can I do?", "KeyBindings",
+                        new SceneAction(ActionType.Talk, "none")),
+                    new SceneOption("I'm good, thanks.", "",
+                        new SceneAction(ActionType.End, "none"))
+                }));
+
+            return convo;
         }
     }
 }

@@ -110,7 +110,7 @@ namespace AvatarAdventure.ConversationComponents
             {
                 SelectedIndex++;
                 if (SelectedIndex > Options.Count - 1)
-                    SelectedIndex = Options.Count;
+                    SelectedIndex = 0;
             }
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D background, SpriteFont font)

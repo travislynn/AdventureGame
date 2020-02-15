@@ -15,23 +15,15 @@ namespace AvatarAdventure.GameStates
     }
     public class ConversationState : BaseGameState, IConversationState
     {
-        #region Field Region
         private Conversation conversation;
         private SpriteFont font;
         private Texture2D background;
         private Player player;
         private ICharacter speaker;
-        #endregion
-        #region Property Region
-        #endregion
-        #region Constructor Region
-        public ConversationState(Game game)
-            : base(game)
+        public ConversationState(Game game) : base(game)
         {
             game.Services.AddService(typeof(IConversationState), this);
         }
-        #endregion
-        #region Method Region
         public override void Initialize()
         {
             base.Initialize();
@@ -104,6 +96,5 @@ namespace AvatarAdventure.GameStates
         {
             conversation.StartConversation();
         }
-        #endregion
     }
 }
