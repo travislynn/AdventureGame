@@ -72,6 +72,7 @@
     <Compile Include="ConversationComponents\GameScene.cs" />
     <Compile Include="ConversationComponents\SceneAction.cs" />
     <Compile Include="ConversationComponents\SceneOption.cs" />
+    <Compile Include="DTOs\CharacterData.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
     <Compile Include="GameStates\BattleOverState.cs" />
@@ -115,6 +116,9 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -149,6 +153,10 @@
     <None Include="Data\Avatars.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\characters.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

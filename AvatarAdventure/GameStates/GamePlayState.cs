@@ -4,6 +4,7 @@ using AvatarAdventure.AvatarComponents;
 using AvatarAdventure.CharacterComponents;
 using AvatarAdventure.Components;
 using AvatarAdventure.ConversationComponents;
+using AvatarAdventure.DTOs;
 using AvatarAdventure.PlayerComponents;
 using AvatarAdventure.TileEngine;
 using Microsoft.Xna.Framework;
@@ -248,10 +249,12 @@ namespace AvatarAdventure.GameStates
             ConversationManager.CreateConversations(GameRef);
 
             // TODO:  Build characters from data file
-            ICharacter lance = Character.FromString(GameRef,
-                "Lance,teacherone,WalkDown,teacherone,water");
-            ICharacter marissa = PCharacter.FromString(GameRef,
-                "Marissa,teachertwo,WalkDown,tearchertwo,0,wind,earth");
+            var lanceDTO = new CharacterData("Lance", "teacherone", AnimationKey.WalkDown, "teacherone", "water");
+            ICharacter lance = Character.FromDTO(GameRef, lanceDTO);
+
+
+            var marissaString = "Marissa,teachertwo,WalkDown,tearchertwo,0,wind,earth";
+            ICharacter marissa = PCharacter.FromString(GameRef, marissaString);
 
             lance.SetConversation("LanceHello");
             marissa.SetConversation("MarissaHello");
