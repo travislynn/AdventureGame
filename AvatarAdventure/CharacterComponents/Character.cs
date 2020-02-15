@@ -11,52 +11,29 @@ namespace AvatarAdventure.CharacterComponents
 {
     public class Character : ICharacter
     {
-        #region Constant
         public const float SpeakingRadius = 40f;
-        #endregion
-        #region Field Region
-        private string name;
-        private Avatar battleAvatar;
-        private Avatar givingAvatar;
-        private AnimatedSprite sprite;
-        private string conversation;
+
         private string textureName;
 
         private static Game1 gameRef;
         private static Dictionary<AnimationKey, Animation> characterAnimations = new Dictionary<AnimationKey, Animation>();
-        #endregion
-        #region Property Region
-        public string Name
-        {
-            get { return name; }
-        }
-        public AnimatedSprite Sprite
-        {
-            get { return sprite; }
-        }
-        public Avatar BattleAvatar
-        {
-            get { return battleAvatar; }
-        }
-        public Avatar GiveAvatar
-        {
-            get { return givingAvatar; }
-        }
-        public string Conversation
-        {
-            get { return conversation; }
-        }
+
+        public string Name { get; private set; }
+
+        public AnimatedSprite Sprite { get; private set; }
+
+        public Avatar BattleAvatar { get; private set; }
+
+        public Avatar GiveAvatar { get; private set; }
+
+        public string Conversation { get; private set; }
 
         public bool Battled { get; set; }
 
 
-        #endregion
-        #region Constructor Region
         private Character()
         {
         }
-        #endregion
-        #region Method Region
         private static void BuildAnimations()
         {
         }
@@ -70,45 +47,45 @@ namespace AvatarAdventure.CharacterComponents
                 BuildAnimations();
             Character character = new Character();
             string[] parts = characterString.Split(',');
-            character.name = parts[0];
+            character.Name = parts[0];
             character.textureName = parts[1];
             Texture2D texture = game.Content.Load<Texture2D>(@"CharacterSprites\" + parts[1]);
-            character.sprite = new AnimatedSprite(texture, gameRef.PlayerAnimations);
+            character.Sprite = new AnimatedSprite(texture, gameRef.PlayerAnimations);
             AnimationKey key = AnimationKey.WalkDown;
             Enum.TryParse<AnimationKey>(parts[2], true, out key);
-            character.sprite.CurrentAnimation = key;
-            character.conversation = parts[3];
-            character.battleAvatar = AvatarManager.GetAvatar(parts[4].ToLowerInvariant());
+            character.Sprite.CurrentAnimation = key;
+            character.Conversation = parts[3];
+            character.BattleAvatar = AvatarManager.GetAvatar(parts[4].ToLowerInvariant());
             return character;
         }
+
         public bool Save(BinaryWriter writer)
         {
             StringBuilder b = new StringBuilder();
-            b.Append(name);
+            b.Append(Name);
             b.Append(",");
             b.Append(textureName);
             b.Append(",");
-            b.Append(sprite.CurrentAnimation);
+            b.Append(Sprite.CurrentAnimation);
             writer.Write(b.ToString());
-            if (givingAvatar != null)
-                givingAvatar.Save(writer);
-            if (battleAvatar != null)
-                battleAvatar.Save(writer);
+            if (GiveAvatar != null)
+                GiveAvatar.Save(writer);
+            if (BattleAvatar != null)
+                BattleAvatar.Save(writer);
             return true;
         }
         public void SetConversation(string newConversation)
         {
-            this.conversation = newConversation;
+            this.Conversation = newConversation;
         }
         
         public void Update(GameTime gameTime)
         {
-            sprite.Update(gameTime);
+            Sprite.Update(gameTime);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            sprite.Draw(gameTime, spriteBatch);
+            Sprite.Draw(gameTime, spriteBatch);
         }
-        #endregion
     }
 }

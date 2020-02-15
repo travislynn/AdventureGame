@@ -2,32 +2,17 @@
 {
     public class SceneOption
     {
-        private string optionText;
-        private string optionScene;
-        private SceneAction optionAction;
-        private SceneOption()
-        {
-        }
-        public string OptionText
-        {
-            get { return optionText; }
-            set { optionText = value; }
-        }
-        public string OptionScene
-        {
-            get { return optionScene; }
-            set { optionScene = value; }
-        }
-        public SceneAction OptionAction
-        {
-            get { return optionAction; }
-            set { optionAction = value; }
-        }
+        public string OptionText { get; set; }
+
+        public string OptionScene { get; set; }
+
+        public SceneAction OptionAction { get; set; }
+
         public SceneOption(string text, string scene, SceneAction action)
         {
-            optionText = text;
-            optionScene = scene;
-            optionAction = action;
+            OptionText = text;
+            OptionScene = scene;
+            OptionAction = action;
         }
     }
 }

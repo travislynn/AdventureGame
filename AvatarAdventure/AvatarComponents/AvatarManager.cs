@@ -6,27 +6,18 @@ namespace AvatarAdventure.AvatarComponents
 {
     public static class AvatarManager
     {
-        #region Field Region
-        private static Dictionary<string, Avatar> avatarList = new Dictionary<string, Avatar>();
-        #endregion
-        #region Property Region
-        public static Dictionary<string, Avatar> AvatarList
-        {
-            get { return avatarList; }
-        }
-        #endregion
-        #region Constructor Region
-        #endregion
-        #region Method Region
+        public static Dictionary<string, Avatar> AvatarList { get; } = new Dictionary<string, Avatar>();
+
         public static void AddAvatar(string name, Avatar avatar)
         {
-            if (!avatarList.ContainsKey(name))
-                avatarList.Add(name, avatar);
+            if (!AvatarList.ContainsKey(name))
+                AvatarList.Add(name, avatar);
         }
         public static Avatar GetAvatar(string name)
         {
-            if (avatarList.ContainsKey(name))
-                return (Avatar)avatarList[name].Clone();
+            if (AvatarList.ContainsKey(name))
+                return (Avatar)AvatarList[name].Clone();
+
             return null;
         }
 
@@ -48,8 +39,8 @@ namespace AvatarAdventure.AvatarComponents
                                 if (lineIn != null)
                                 {
                                     Avatar avatar = Avatar.FromString(lineIn, content);
-                                    if (!avatarList.ContainsKey(avatar.Name.ToLowerInvariant()))
-                                        avatarList.Add(avatar.Name.ToLowerInvariant(), avatar);
+                                    if (!AvatarList.ContainsKey(avatar.Name.ToLowerInvariant()))
+                                        AvatarList.Add(avatar.Name.ToLowerInvariant(), avatar);
                                 }
                             } while (lineIn != null);
                         }
@@ -73,7 +64,5 @@ namespace AvatarAdventure.AvatarComponents
                 }
             }
         }
-
-        #endregion
     }
 }
