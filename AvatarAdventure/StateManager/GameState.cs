@@ -7,13 +7,10 @@ namespace AvatarAdventure.StateManager
 {
     public abstract partial class GameState : DrawableGameComponent, IGameState
     {
-        #region Field Region
-
         protected GameState tag;
         protected readonly IStateManager manager;
         protected ContentManager content;
         protected readonly List<GameComponent> childComponents;
-
         protected PlayerIndex? indexInControl;
 
         public PlayerIndex? PlayerIndexInControl
@@ -21,10 +18,6 @@ namespace AvatarAdventure.StateManager
             get { return indexInControl; }
             set { indexInControl = value; }
         }
-
-        #endregion
-
-        #region Property Region
 
         public List<GameComponent> Components
         {
@@ -36,10 +29,6 @@ namespace AvatarAdventure.StateManager
             get { return tag; }
         }
 
-        #endregion
-
-        #region Constructor Region
-
         public GameState(Game game) : base(game)
         {
             tag = this;
@@ -49,10 +38,6 @@ namespace AvatarAdventure.StateManager
 
             manager = (IStateManager)Game.Services.GetService(typeof(IStateManager));
         }
-
-        #endregion
-
-        #region Method Region
 
         protected override void LoadContent()
         {
@@ -110,7 +95,5 @@ namespace AvatarAdventure.StateManager
                     ((DrawableGameComponent)component).Visible = false;
             }
         }
-
-        #endregion
     }
 }

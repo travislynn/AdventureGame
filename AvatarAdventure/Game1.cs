@@ -78,7 +78,8 @@ namespace AvatarAdventure
         {
             Components.Add(new Xin(this));
 
-            // configure player animations
+            // configure player animations and npcs
+            // configures animationkeys to spritemaps
             Animation animation = new Animation(3, 64, 64, 0, 0);
             PlayerAnimations.Add(AnimationKey.WalkDown, animation);
 

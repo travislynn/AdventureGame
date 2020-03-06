@@ -10,22 +10,16 @@ namespace AvatarAdventure.GameStates
 {
     public class TitleIntroState : BaseGameState, ITitleIntroState
     {
-        #region Field Region
         Texture2D background;
         Rectangle backgroundDestination;
         SpriteFont font;
         TimeSpan elapsed;
         Vector2 position;
         string message;
-        #endregion
-        #region Constructor Region
-        public TitleIntroState(Game game)
-            : base(game)
+        public TitleIntroState(Game game) : base(game)
         {
             game.Services.AddService(typeof(ITitleIntroState), this);
         }
-        #endregion
-        #region Method Region
         public override void Initialize()
         {
             backgroundDestination = Game1.ScreenRectangle;
@@ -42,12 +36,6 @@ namespace AvatarAdventure.GameStates
                 Game1.ScreenRectangle.Bottom - 50 - font.LineSpacing);
             base.LoadContent();
         }
-        //public override void Update(GameTime gameTime)
-        //{
-        //    PlayerIndex index = PlayerIndex.One;
-        //    elapsed += gameTime.ElapsedGameTime;
-        //    base.Update(gameTime);
-        //}
 
         public override void Update(GameTime gameTime)
         {
@@ -71,7 +59,6 @@ namespace AvatarAdventure.GameStates
             GameRef.SpriteBatch.End();
             base.Draw(gameTime);
         }
-        #endregion
     }
 
 }
