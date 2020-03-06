@@ -6,7 +6,6 @@ namespace AvatarAdventure.CharacterComponents
     {
         private readonly Dictionary<string, ICharacter> _characters = new Dictionary<string, ICharacter>();
 
-        // Static constructor
         public static CharacterManager Instance { get; } = new CharacterManager();
 
         private CharacterManager()

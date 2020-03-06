@@ -67,6 +67,7 @@
     <Compile Include="Components\Xin.cs" />
     <Compile Include="ConversationComponents\ActionType.cs" />
     <Compile Include="ConversationComponents\Conversation.cs" />
+    <Compile Include="ConversationComponents\ConversationBuilder.cs" />
     <Compile Include="ConversationComponents\ConversationManager.cs" />
     <Compile Include="ConversationComponents\GameScene.cs" />
     <Compile Include="ConversationComponents\SceneAction.cs" />

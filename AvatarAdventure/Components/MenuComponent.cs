@@ -8,67 +8,37 @@ namespace AvatarAdventure.Components
 {
     public class MenuComponent
     {
-        #region Fields
-
         SpriteFont spriteFont;
         readonly List<string> menuItems = new List<string>();
         int selectedIndex = -1;
-        bool mouseOver;
-        int width;
-        int height;
-        Color normalColor = Color.White;
-        Color hiliteColor = Color.Red;
         Texture2D texture;
-        Vector2 position;
 
-        #endregion Fields
+        public Vector2 Postion { get; set; }
 
-        #region Properties
+        public int Width { get; private set; }
 
-        public Vector2 Postion
-        {
-            get { return position; }
-            set { position = value; }
-        }
-        public int Width
-        {
-            get { return width; }
-        }
-        public int Height
-        {
-            get { return height; }
-        }
+        public int Height { get; private set; }
+
         public int SelectedIndex
         {
             get { return selectedIndex; }
             set
             {
                 selectedIndex = (int)MathHelper.Clamp(
-                value,
-               0,
-                menuItems.Count - 1);
+                    value,
+                    0,
+                    menuItems.Count - 1);
             }
         }
-        public Color NormalColor
-        {
-            get { return normalColor; }
-            set { normalColor = value; }
-        }
-        public Color HiliteColor
-        {
-            get { return hiliteColor; }
-            set { hiliteColor = value; }
-        }
-        public bool MouseOver
-        {
-            get { return mouseOver; }
-        }
-        #endregion Properties
-        #region Constructors
+        public Color NormalColor { get; set; } = Color.White;
+
+        public Color HiliteColor { get; set; } = Color.Red;
+
+        public bool MouseOver { get; private set; }
 
         public MenuComponent(SpriteFont spriteFont, Texture2D texture)
         {
-            this.mouseOver = false;
+            this.MouseOver = false;
             this.spriteFont = spriteFont;
             this.texture = texture;
         }
@@ -84,9 +54,6 @@ namespace AvatarAdventure.Components
             MeassureMenu();
         }
 
-        #endregion Constructors
-        #region Methods
-
         public void SetMenuItems(string[] items)
         {
             menuItems.Clear();
@@ -94,54 +61,56 @@ namespace AvatarAdventure.Components
             MeassureMenu();
             selectedIndex = 0;
         }
+
         private void MeassureMenu()
         {
-            width = texture.Width;
-            height = 0;
+            Width = texture.Width;
+            Height = 0;
             foreach (string s in menuItems)
             {
                 Vector2 size = spriteFont.MeasureString(s);
-                if (size.X > width)
-                    width = (int)size.X;
-                height += texture.Height + 50;
+                if (size.X > Width)
+                    Width = (int)size.X;
+                Height += texture.Height + 50;
             }
-            height -= 50;
+            Height -= 50;
         }
-
 
         public void Update(GameTime gameTime) //, PlayerIndex index)
         {
-            Vector2 menuPosition = position;
+            Vector2 menuPosition = Postion;
             Point p = Xin.MouseState.Position;
             Rectangle buttonRect;
-            mouseOver = false;
+            MouseOver = false;
             for (int i = 0; i < menuItems.Count; i++)
             {
                 buttonRect = new Rectangle((int)menuPosition.X, (int)menuPosition.Y, texture.Width, texture.Height);
                 if (buttonRect.Contains(p))
                 {
                     selectedIndex = i;
-                    mouseOver = true;
+                    MouseOver = true;
                 }
                 menuPosition.Y += texture.Height + 50;
             }
-            if (!mouseOver && (Xin.CheckKeyReleased(Keys.Up)))
+            if (!MouseOver && (Xin.CheckKeyReleased(Keys.Up)))
             {
                 selectedIndex--;
                 if (selectedIndex < 0)
                     selectedIndex = menuItems.Count - 1;
             }
-            else if (!mouseOver && (Xin.CheckKeyReleased(Keys.Down)))
+            else if (!MouseOver && (Xin.CheckKeyReleased(Keys.Down)))
             {
                 selectedIndex++;
                 if (selectedIndex > menuItems.Count - 1)
                     selectedIndex = 0;
             }
         }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Vector2 menuPosition = position;
+            Vector2 menuPosition = Postion;
             Color myColor;
+
             for (int i = 0; i < menuItems.Count; i++)
             {
                 if (i == SelectedIndex)
@@ -156,10 +125,5 @@ namespace AvatarAdventure.Components
                 menuPosition.Y += texture.Height + 50;
             }
         }
-
-        #endregion Methods
-        #region Virtual Methods
-        #endregion Virtual Methods
     }
-
 }

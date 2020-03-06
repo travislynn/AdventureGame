@@ -10,37 +10,28 @@ namespace AvatarAdventure.ConversationComponents
 {
     public class ConversationManager
     {
-        #region Field Region
-        private static Dictionary<string, Conversation> conversationList = new
-       Dictionary<string, Conversation>();
-        #endregion
-        #region Property Region
-        public static Dictionary<string, Conversation> ConversationList
-        {
-            get { return conversationList; }
-        }
-        #endregion
-        #region Constructor Region
+        public static Dictionary<string, Conversation> ConversationList { get; private set; } = new Dictionary<string, Conversation>();
+
         public ConversationManager()
         {
         }
-        #endregion
-        #region Method Region
         public static void AddConversation(string name, Conversation conversation)
         {
-            if (!conversationList.ContainsKey(name))
-                conversationList.Add(name, conversation);
+            if (!ConversationList.ContainsKey(name))
+                ConversationList.Add(name, conversation);
         }
         public static Conversation GetConversation(string name)
         {
-            if (conversationList.ContainsKey(name))
-                return conversationList[name];
+            if (ConversationList.ContainsKey(name))
+                return ConversationList[name];
             return null;
         }
         public static bool ContainsConversation(string name)
         {
-            return conversationList.ContainsKey(name);
+            return ConversationList.ContainsKey(name);
         }
+
+        // 
         public static void ToFile(string fileName)
         {
             XmlDocument xmlDoc = new XmlDocument();
@@ -98,6 +89,8 @@ namespace AvatarAdventure.ConversationComponents
             XmlWriter writer = XmlWriter.Create(stream, settings);
             xmlDoc.Save(writer);
         }
+
+        // TODO:  Move to JSON
         public static void FromFile(string fileName, Game gameRef, bool editor = false)
         {
             XmlDocument xmlDoc = new XmlDocument();
@@ -109,24 +102,24 @@ namespace AvatarAdventure.ConversationComponents
                     root = root.NextSibling;
                 if (root.Name != "Conversations")
                     throw new Exception("Invalid conversation file!");
+
                 foreach (XmlNode node in root.ChildNodes)
                 {
                     if (node.Name == "#comment")
                         continue;
                     if (node.Name != "Conversation")
                         throw new Exception("Invalid conversation file!");
+
                     string conversationName = node.Attributes["Name"].Value;
                     string firstScene = node.Attributes["FirstScene"].Value;
                     string backgroundName = node.Attributes["BackgroundName"].Value;
                     string fontName = node.Attributes["FontName"].Value;
-                    Texture2D background = gameRef.Content.Load<Texture2D>(@"Backgrounds\" +
-                   backgroundName);
-                    SpriteFont font = gameRef.Content.Load<SpriteFont>(@"Fonts\" +
-                   fontName);
-                    Conversation conversation = new Conversation(conversationName,
-                   firstScene, background, font);
+                    Texture2D background = gameRef.Content.Load<Texture2D>(@"Backgrounds\" + backgroundName);
+                    SpriteFont font = gameRef.Content.Load<SpriteFont>(@"Fonts\" + fontName);
+                    Conversation conversation = new Conversation(conversationName, firstScene, background, font);
                     conversation.BackgroundName = backgroundName;
                     conversation.FontName = fontName;
+
                     foreach (XmlNode sceneNode in node.ChildNodes)
                     {
                         string text = "";
@@ -151,10 +144,8 @@ namespace AvatarAdventure.ConversationComponents
                                 optionParam = innerNode.Attributes["Parameter"].Value;
                                 SceneAction action = new SceneAction();
                                 action.Parameter = optionParam;
-                                action.Action = (ActionType)Enum.Parse(typeof(ActionType),
-                               optionAction);
-                                SceneOption option = new SceneOption(optionText,
-                               optionScene, action);
+                                action.Action = (ActionType)Enum.Parse(typeof(ActionType), optionAction);
+                                SceneOption option = new SceneOption(optionText, optionScene, action);
                                 sceneOptions.Add(option);
                             }
                         }
@@ -165,7 +156,7 @@ namespace AvatarAdventure.ConversationComponents
                             scene = new GameScene(gameRef, text, sceneOptions);
                         conversation.AddScene(sceneName, scene);
                     }
-                    conversationList.Add(conversationName, conversation);
+                    ConversationList.Add(conversationName, conversation);
                 }
             }
             catch
@@ -176,95 +167,26 @@ namespace AvatarAdventure.ConversationComponents
                 xmlDoc = null;
             }
         }
-        #endregion
+
+
         public static void ClearConversations()
         {
-            conversationList = new Dictionary<string, Conversation>();
+            ConversationList = new Dictionary<string, Conversation>();
         }
 
-        // TODO:  better way of organizing/creating conversations
         public static void CreateConversations(Game gameRef)
         {
-            Texture2D sceneTexture = gameRef.Content.Load<Texture2D>(@"Scenes\scenebackground");
-            SpriteFont sceneFont = gameRef.Content.Load<SpriteFont>(@"Fonts\scenefont");
+            // TODO:  Build conversations from data file
+            // TODO:  Convos to give items
+            // TODO:  Convos to buy/sell
+            // TODO:  Puzzles in convos
+            // TODO:  Tutorial/Guide NPC - Marissa
 
-            Conversation c = new Conversation("MarissaHello", "Hello", sceneTexture, sceneFont);
-            c.BackgroundName = "scenebackground";
-            c.FontName = "scenefont";
+            var convoBuilder = new ConversationBuilder(gameRef);
 
-            List<SceneOption> options = new List<SceneOption>();
-            SceneOption option = new SceneOption(
-                "Good bye.",
-                "",
-                new SceneAction() { Action = ActionType.End, Parameter = "none" });
-            options.Add(option);
+            ConversationList.Add("MarissaHello", convoBuilder.MakeMarissaDefault());
 
-            GameScene scene = new GameScene(
-                gameRef,
-                "Hello, my name is Marissa. I'm here to guide you.  Go on, get!",
-                options);
-
-            c.AddScene("Hello", scene);
-            ConversationList.Add("MarissaHello", c);
-
-            // A Converstaion
-            //   has scenes
-            //     has options that point to other scenes
-
-
-
-            c = new Conversation("LanceHello", "Hello", sceneTexture, sceneFont);
-            c.BackgroundName = "scenebackground";
-            c.FontName = "scenefont";
-            options = new List<SceneOption>();
-
-            //  *******************************  one scene with text options
-            option = new SceneOption(
-                "Yes",
-                "ILikeFire",  // target scene to trigger with action
-                new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
-            options.Add(option);
-
-            option = new SceneOption(
-                "No fire sucks ass",
-                "IDislikeFire",  // target scene to trigger with action
-                new SceneAction() { Action = ActionType.Talk, Parameter = "none" });
-            options.Add(option);
-
-            scene = new GameScene(
-                gameRef,
-                "Fire avatars are my favorites. Do you like fire type avatars too?",
-                options);
-            c.AddScene("Hello", scene);
-            /******************************************************************/
-
-            options = new List<SceneOption>();
-            option = new SceneOption(
-                "Good bye.",
-                "",
-                new SceneAction() { Action = ActionType.End, Parameter = "none" });
-            options.Add(option);
-
-            scene = new GameScene(
-                gameRef,
-                "That's cool. I wouldn't want to hug one though.",
-                options);
-            c.AddScene("ILikeFire", scene);
-
-            options = new List<SceneOption>();
-                option = new SceneOption(
-                "Good bye.",
-                "",
-                new SceneAction() { Action = ActionType.End, Parameter = "none" });
-            options.Add(option);
-
-            scene = new GameScene(
-                gameRef,
-                "Each to their own I guess.",
-                options);
-            c.AddScene("IDislikeFire", scene);
-
-            conversationList.Add("LanceHello", c);
-        }
+            ConversationList.Add("LanceHello", convoBuilder.MakeLanceDefault());
+        }
     }
 }
